@@ -4,5 +4,6 @@
     <string name="details_button">Details</string>
     <string name="search_button">Search</string>
     <string name="search_edittext">Enter name</string>
+    <string name="rating_label">Rating</string>
 
 </resources>

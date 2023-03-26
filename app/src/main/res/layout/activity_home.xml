@@ -69,5 +69,5 @@
         app:layout_constraintEnd_toStartOf="@+id/home_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@drawable/steamicon" />
 </androidx.constraintlayout.widget.ConstraintLayout>

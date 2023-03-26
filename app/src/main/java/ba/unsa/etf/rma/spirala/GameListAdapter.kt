@@ -25,8 +25,8 @@ class GameListAdapter(
     override fun onBindViewHolder(holder: GameViewHolder, position: Int) {
         holder.gameTitle.text = games[position].title
         holder.gamePlatform.text = games[position].platform
-        holder.game_rating.text = games[position].rating.toString()
         holder.gameReleaseDate.text = games[position].releaseDate
+        holder.gameRating.text = games[position].rating.toString()
 
     }
 
@@ -37,7 +37,7 @@ class GameListAdapter(
 
     inner class GameViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val gameTitle: TextView = itemView.findViewById(R.id.game_title_textview)
-        val game_rating: TextView = itemView.findViewById(R.id.game_rating_textview)
+        val gameRating: TextView = itemView.findViewById(R.id.game_rating_textview)
         val gameReleaseDate: TextView = itemView.findViewById(R.id.game_release_date_textview)
         val gamePlatform: TextView = itemView.findViewById(R.id.game_platform_textview)
 
