@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">spirala</string>
+    <string name="home_button">Home</string>
+    <string name="details_button">Details</string>
+    <string name="search_button">Search</string>
+    <string name="search_edittext">Enter name</string>
+
+</resources>
