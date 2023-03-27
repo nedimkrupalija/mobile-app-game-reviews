@@ -17,7 +17,7 @@ class HomeActivity : AppCompatActivity() {
         games = findViewById(R.id.game_list)
         games.layoutManager = LinearLayoutManager(
             this,
-            LinearLayoutManager.HORIZONTAL,
+            LinearLayoutManager.VERTICAL,
             false
         )
         gameListAdapter = GameListAdapter(listOf())
