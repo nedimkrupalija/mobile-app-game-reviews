@@ -1,6 +1,8 @@
 package ba.unsa.etf.rma.spirala
 
 abstract class UserImpression(
-    val userName: String,
-    open val timestamp: Long
+    open val userName: String,
+    open val timestamp: Long,
+    open val review: String?,
+    open val rating: Double?
 )

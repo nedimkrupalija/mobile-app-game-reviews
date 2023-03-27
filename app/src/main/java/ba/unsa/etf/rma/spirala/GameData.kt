@@ -1,5 +1,9 @@
 package ba.unsa.etf.rma.spirala
 
+import java.sql.Date
+import java.sql.Time
+
+
 class GameData {
     companion object{
         fun getAll(): List<Game>{
@@ -13,7 +17,11 @@ class GameData {
                             "Global Offensive was released for OS X, PlayStation 3, Windows, " +
                             "and Xbox 360 in August 2012, and for Linux in 2014. " +
                             "Valve still regularly updates the game, both with smaller " +
-                            "balancing patches and larger content additions",null),
+                            "balancing patches and larger content additions",
+                    mutableListOf<UserImpression>(
+                        UserRating("csgoGamer", System.currentTimeMillis(),9.2),
+                        UserReview("top gun", System.currentTimeMillis(),"Game is very good"))
+                    ),
                 Game("Call of Duty: Warzone",
                     "PC, PS, XBOX", "10.03.2020", 9.2,
                     "warzoneCover", "Mature","Raven Software, Infinity Ward",
@@ -117,6 +125,14 @@ class GameData {
 
 
             )
+        }
+        /*
+        val games: ArrayList<Game> = arrayListOf()
+        games.addAll(getAll())
+        val game = games.find {game -> name == game.title}
+         */
+        fun getDetails(title: String): Game?{
+            return getAll().find { game -> game.title == title }
         }
 
 

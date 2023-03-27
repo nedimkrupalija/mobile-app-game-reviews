@@ -31,8 +31,6 @@ class HomeActivity : AppCompatActivity() {
 
         homeButton = findViewById(R.id.home_button)
         detailsButton = findViewById(R.id.details_button)
-
-
     }
     private fun showDetails(game: Game){
         val intent = Intent(this, GameDetailsActivity::class.java).apply{

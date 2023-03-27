@@ -6,8 +6,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import ba.unsa.etf.rma.spirala.GameData.Companion.getAll
-import org.w3c.dom.Text
+import ba.unsa.etf.rma.spirala.GameData.Companion.getDetails
 
 class GameDetailsActivity : AppCompatActivity() {
     private lateinit var game: Game
@@ -20,6 +22,10 @@ class GameDetailsActivity : AppCompatActivity() {
     private lateinit var publisher: TextView
     private lateinit var genre: TextView
     private lateinit var description: TextView
+
+    private lateinit var reviews: RecyclerView
+
+    private lateinit var reviewsAdapter: GameReviewAdapter
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,12 +42,21 @@ class GameDetailsActivity : AppCompatActivity() {
         genre = findViewById(R.id.genre_textview)
         description = findViewById(R.id.description_textview)
 
-
+        reviews = findViewById(R.id.impression_recyclerView)
         val extras = intent.extras
-        if(extras!=null){
-            game = getGameByTitle(extras.getString("game_title",""))
+        if (extras != null) {
+            game = getDetails(extras.getString("game_title", ""))!!
             populateDetails()
         }
+        reviews.layoutManager = LinearLayoutManager(
+            this, LinearLayoutManager.VERTICAL, false
+        )
+        reviewsAdapter = GameReviewAdapter(listOf())
+        reviews.adapter = reviewsAdapter
+        var reviewsList: List<UserImpression>? = getDetails(game.title)?.userImpressions
+        if (reviewsList != null) {
+        reviewsAdapter.updateReview(getDetails(game.title)!!.userImpressions!!)
+     }
 
     }
     private fun populateDetails(){
@@ -62,19 +77,5 @@ class GameDetailsActivity : AppCompatActivity() {
 
     }
 
-    private fun getGameByTitle(name: String):Game{
-        val games: ArrayList<Game> = arrayListOf()
-        games.addAll(getAll())
-        val game = games.find {game -> name == game.title}
-        return game?:Game("Test",
-            "Test",
-            "Test",
-            0.0,
-            "Test",
-        "Test","Test",
-        "Test",
-        "Test",
-        "Test",
-        null)
-    }
+
 }
