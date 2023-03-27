@@ -1,7 +1,9 @@
 package ba.unsa.etf.rma.spirala
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -11,6 +13,9 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var games: RecyclerView
     private lateinit var gameListAdapter: GameListAdapter
     private var gamesList = getAll()
+    private lateinit var homeButton: Button
+    private lateinit var detailsButton: Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -20,8 +25,19 @@ class HomeActivity : AppCompatActivity() {
             LinearLayoutManager.VERTICAL,
             false
         )
-        gameListAdapter = GameListAdapter(listOf())
+        gameListAdapter = GameListAdapter(arrayListOf()) {game -> showDetails(game)}
         games.adapter = gameListAdapter
         gameListAdapter.updateGames(gamesList)
+
+        homeButton = findViewById(R.id.home_button)
+        detailsButton = findViewById(R.id.details_button)
+
+
+    }
+    private fun showDetails(game: Game){
+        val intent = Intent(this, GameDetailsActivity::class.java).apply{
+            putExtra("game_title",game.title)
+        }
+        startActivity(intent)
     }
 }

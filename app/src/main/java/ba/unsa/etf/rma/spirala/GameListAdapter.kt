@@ -8,7 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 
 
 class GameListAdapter(
-    private var games: List<Game>
+    private var games: List<Game>,
+    private val onItemClicked: (game: Game) -> Unit
 ): RecyclerView.Adapter<GameListAdapter.GameViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -28,6 +29,7 @@ class GameListAdapter(
         holder.gameReleaseDate.text = games[position].releaseDate
         holder.gameRating.text = games[position].rating.toString()
 
+        holder.itemView.setOnClickListener{ onItemClicked(games[position])}
     }
 
     fun updateGames(games: List<Game>){

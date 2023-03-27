@@ -5,5 +5,8 @@
     <string name="search_button">Search</string>
     <string name="search_edittext">Enter name</string>
     <string name="rating_label">Rating</string>
+    <string name="genre">Genre</string>
+    <string name="publisher">Publisher</string>
+    <string name="developer">Developer</string>
 
 </resources>
