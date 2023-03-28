@@ -2,8 +2,11 @@ package ba.unsa.etf.rma.spirala
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +26,9 @@ class GameDetailsActivity : AppCompatActivity() {
     private lateinit var genre: TextView
     private lateinit var description: TextView
 
+    private lateinit var homeButton: Button
+    private lateinit var detailsButton: Button
+
     private lateinit var reviews: RecyclerView
 
     private lateinit var reviewsAdapter: GameReviewAdapter
@@ -41,7 +47,10 @@ class GameDetailsActivity : AppCompatActivity() {
         publisher = findViewById(R.id.publisher_textview)
         genre = findViewById(R.id.genre_textview)
         description = findViewById(R.id.description_textview)
+        homeButton = findViewById(R.id.home_button)
+        detailsButton = findViewById(R.id.details_button)
 
+        detailsButton.isEnabled = false
         reviews = findViewById(R.id.impression_recyclerView)
         val extras = intent.extras
         if (extras != null) {
@@ -57,8 +66,13 @@ class GameDetailsActivity : AppCompatActivity() {
         if (reviewsList != null) {
         reviewsAdapter.updateReview(reviewsList.sortedByDescending { it.timestamp })
      }
+        homeButton.setOnClickListener{
+            showHomeLayout()
+        }
 
     }
+
+
     private fun populateDetails(){
 
         title.text = game.title
@@ -77,5 +91,11 @@ class GameDetailsActivity : AppCompatActivity() {
 
     }
 
+    private fun showHomeLayout(){
+        val intent = Intent(this, HomeActivity::class.java).apply {
+            putExtra("game_title",game.title)
+        }
+        startActivity(intent)
+    }
 
 }
