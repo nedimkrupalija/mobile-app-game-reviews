@@ -35,7 +35,7 @@ RecyclerView.Adapter<GameReviewAdapter.GameDetailViewHolder>(){
             holder.ratingBar.isVisible = false
         }
         else if(reviews[position] is UserRating){
-            holder.ratingBar.rating = reviews[position].rating!!.toFloat()
+            holder.ratingBar.rating = reviews[position].rating!!.toFloat()/2.0f
             holder.review.isVisible = false
         }
     }

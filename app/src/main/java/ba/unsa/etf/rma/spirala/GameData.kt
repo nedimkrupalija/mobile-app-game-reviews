@@ -18,10 +18,18 @@ class GameData {
                             "and Xbox 360 in August 2012, and for Linux in 2014. " +
                             "Valve still regularly updates the game, both with smaller " +
                             "balancing patches and larger content additions",
-                    mutableListOf<UserImpression>(
-                        UserRating("csgoGamer", System.currentTimeMillis(),9.2),
-                        UserReview("top gun", System.currentTimeMillis(),"Game is very good"))
-                    ),
+                    mutableListOf(
+                        UserRating("csgoGamer", Date.valueOf("2023-03-03").time,7.0),
+                        UserReview("top gun", Date.valueOf("2023-03-28").time,"I've been playing this since Half Life, " +
+                                "and it's only got better along the journey. Nothing like a quick on-line session to relieve some of the daily stress after work!"),
+                        UserRating("Nedim Krupalija",Date.valueOf("2020-01-21").time,10.0),
+                        UserReview("generic name", Date.valueOf("2013-09-05").time,"This game is wonderful mostly because it " +
+                                "can range for the perfect game for low skilled player, but also has" +
+                                " the depth for a professional player. If you want to " +
+                                "introduce anyone to gaming, this should be the game of" +
+                                " your choice for 90% of the time. "),
+                        UserRating("Another generic name", Date.valueOf("2018-01-01").time,4.0)
+                    )),
                 Game("Call of Duty: Warzone",
                     "PC, PS, XBOX", "10.03.2020", 9.2,
                     "warzoneCover", "Mature","Raven Software, Infinity Ward",
@@ -33,7 +41,22 @@ class GameData {
                             "shrinks, forcing the remaining players into tighter spaces. In Warzone, " +
                             "the non-playable areas become contaminated with a yellow gas that depletes" +
                             " health and eventually kills the player if they do not return to the safe" +
-                            " playable area",null),
+                            " playable area", mutableListOf(
+                            UserReview("Greg Gregor",Date.valueOf("2021-03-20").time,"Call Of Duty is a " +
+                                    "fantastic and revolutionary first instalment in the forever changing" +
+                                    " and advancing Call Of Duty series. This game is in fact a true and " +
+                                    "undeniable legend in the gaming industry"),
+                            UserRating("GG",Date.valueOf("2022-03-05").time,2.0),
+                            UserReview("Cameron", Date.valueOf("2022-01-06").time,"It has f" +
+                                    "inally been proven and confirmed that the makers of COD Modern Warfare " +
+                                    "Warzone suppress XBox players by giving PS4 and PC players a large " +
+                                    "advantage in the game. "),
+                            UserReview("Alex", Date.valueOf("2021-06-06").time,"Warzone is " +
+                                    "clearly a popular game, however I've laid out some pros and cons to " +
+                                    "allow you to make a decision of whether you want to play this game" +
+                                    " or not."),
+                            UserRating("Nikolaj", Date.valueOf("2023-03-05").time,9.5)
+                            )),
                         Game("Need For Speed: Most Wanted",
                 "PC, PS, XBOX", "11.11.2005", 8.2,
                 "nfsmwCover", "Mild Violence","Electronic Arts",

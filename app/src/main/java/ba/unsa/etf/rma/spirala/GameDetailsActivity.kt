@@ -27,7 +27,7 @@ class GameDetailsActivity : AppCompatActivity() {
 
     private lateinit var reviewsAdapter: GameReviewAdapter
 
-    @SuppressLint("MissingInflatedId")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game_details)
@@ -55,7 +55,7 @@ class GameDetailsActivity : AppCompatActivity() {
         reviews.adapter = reviewsAdapter
         var reviewsList: List<UserImpression>? = getDetails(game.title)?.userImpressions
         if (reviewsList != null) {
-        reviewsAdapter.updateReview(getDetails(game.title)!!.userImpressions!!)
+        reviewsAdapter.updateReview(reviewsList.sortedByDescending { it.timestamp })
      }
 
     }
