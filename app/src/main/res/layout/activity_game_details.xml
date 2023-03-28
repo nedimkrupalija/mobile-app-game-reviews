@@ -14,9 +14,11 @@
         <ImageView
             android:id="@+id/cover_imageview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="150dp"
             android:layout_gravity="center"
-            tools:srcCompat="@tools:sample/avatars" />
+            android:layout_margin="5dp"
+            app:srcCompat="@drawable/csgo_cover"
+            tools:srcCompat="@drawable/csgo_cover" />
 
         <TextView
             android:id="@+id/game_title_textview"
