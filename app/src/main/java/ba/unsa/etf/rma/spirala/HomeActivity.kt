@@ -43,16 +43,7 @@ class HomeActivity : AppCompatActivity() {
                 val game = getDetails(extras.getString("game_title",""))
                 showDetails(game!!)
             }
-
-
         }
-        /*
-        val extras = intent.extras
-        if (extras != null) {
-            game = getDetails(extras.getString("game_title", ""))!!
-            populateDetails()
-        }
-         */
     }
     private fun showDetails(game: Game){
         val intent = Intent(this, GameDetailsActivity::class.java).apply{
@@ -61,12 +52,7 @@ class HomeActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun showLastDetails(game: Game){
-        val intent = Intent(this, GameDetailsActivity::class.java).apply{
-            putExtra("game_title",game.title)
-        }
-        startActivity(intent)
-    }
+
 
 
 }
