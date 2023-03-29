@@ -41,7 +41,7 @@ class HomeActivity : AppCompatActivity() {
         detailsButton.setOnClickListener{
             if(extras!=null){
                 val game = getDetails(extras.getString("game_title",""))
-                showLastDetails(game!!)
+                showDetails(game!!)
             }
 
 
