@@ -21,7 +21,7 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        games = findViewById(R.id.game_list)
+       games = findViewById(R.id.game_list)
         games.layoutManager = LinearLayoutManager(
             this,
             LinearLayoutManager.VERTICAL,

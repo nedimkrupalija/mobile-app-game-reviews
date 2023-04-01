@@ -65,7 +65,7 @@ class GameData {
                                     " a variety of licensed real-world cars (available at the time of" +
                                     " the game's development and release) that can be upgraded and" +
                                     " customized with new parts while contending with the involvement " +
-                                    "of the police in their efforts to impede the player.",null),
+                                    "of the police in their efforts to impede the player.",emptyList()),
                 Game("PlayerUnkown's Battlegrounds",
                     "PC", "23.03.2017", 8.5,
                     "pubg_cover", "Violent 16+","PUBG Studios",
@@ -74,7 +74,7 @@ class GameData {
                             "fight in a battle royale, a type of large-scale last man standing deathmatch " +
                             "where players fight to remain the last alive. Players can choose" +
                             " to enter the match solo, duo, or with a small team of up to four people." +
-                            " The last person or team alive wins the match.",null),
+                            " The last person or team alive wins the match.",emptyList()),
                 Game("League of Legends",
                     "PC", "27.10.2009", 7.6,
                     "lol_cover", "Teen","Riot Games",
@@ -86,7 +86,7 @@ class GameData {
                             " by accruing experience points (XP) through killing enemies. Items can" +
                             " be acquired to increase champions' strength,[6] and are bought with gold," +
                             " which players accrue passively over time and earn actively by " +
-                            "defeating the opposing team's minions,champions, or defensive structures.",null),
+                            "defeating the opposing team's minions,champions, or defensive structures.",emptyList()),
                 Game("World of Tanks",
                     "PC, PS, XBOX", "12.08.2010", 9.0,
                     "wot_cover", "Teen","Wargaming",
@@ -97,7 +97,7 @@ class GameData {
                             " allied players and all the other players through typed or voice chat. " +
                             "A simple random match is won either by destroying all vehicles on the " +
                             "opposing team or capturing the opposing team's base by staying in it " +
-                            "for long enough without being damaged by another tank. ",null),
+                            "for long enough without being damaged by another tank. ",emptyList()),
                 Game("Counter-Strike 1.6",
                     "PC", "12.09.2003", 9.7,
                     "cs_cover", "Teen","Valve",
@@ -105,7 +105,7 @@ class GameData {
                             "is an objective-based, multiplayer tactical first-person shooter." +
                             " Two opposing teams—the Terrorists and the Counter Terrorists—compete " +
                             "in game modes to complete objectives, such as securing a location to " +
-                            "plant or defuse a bomb and rescuing or guarding hostages",null),
+                            "plant or defuse a bomb and rescuing or guarding hostages",emptyList()),
                 Game("Fortnite",
                     "PC, PS, XBOX", "21.07.2021", 8.6,
                     "fortnite_cover", "Teen","Epic Games",
@@ -118,7 +118,7 @@ class GameData {
                             "hybrid tower defense-shooter and survival game in which up to four players" +
                             " fight off zombie-like creatures and defend objects with traps and " +
                             "fortifications they can build; and Fortnite Creative, in which players" +
-                            " are given complete freedom to create worlds and battle arenas.",null),
+                            " are given complete freedom to create worlds and battle arenas.",emptyList()),
                         Game("Among Us",
                 "PC, PS, XBOX", "15.06.2018", 9.0,
                 "amoungus_cover", "Everyone 10+","InnerSloth LLC.",
@@ -134,7 +134,7 @@ class GameData {
                                     " all Impostors. Impostors can likewise win in two ways; either " +
                                     "by killing or ejecting all Crewmates,[e] or by sabotaging a" +
                                     " critical system on the map (provided the Crewmates do not " +
-                                    "resolve it in time).",null),
+                                    "resolve it in time).",emptyList()),
                 Game("Rocket League",
                     "PC, PS, XBOX", "15.06.2018", 9.0,
                     "rl_cover", "Everyone","Psyonix",
@@ -143,7 +143,7 @@ class GameData {
                             "Acrobatic Rocket-Powered Battle-Cars. Players control a rocket-powered " +
                             "car and use it to hit a ball that is much larger than the cars towards " +
                             "the other team's goal area to score goals, in a way that resembles indoor " +
-                            "soccer, with elements reminiscent of a demolition derby.",null)
+                            "soccer, with elements reminiscent of a demolition derby.",emptyList())
 
 
 

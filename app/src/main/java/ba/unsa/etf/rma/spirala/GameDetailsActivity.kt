@@ -1,17 +1,14 @@
 package ba.unsa.etf.rma.spirala
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import ba.unsa.etf.rma.spirala.GameData.Companion.getAll
 import ba.unsa.etf.rma.spirala.GameData.Companion.getDetails
 
 class GameDetailsActivity : AppCompatActivity() {
@@ -39,7 +36,7 @@ class GameDetailsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_game_details)
 
         title = findViewById(R.id.game_title_textview)
-        platform = findViewById(R.id.game_platform_textview)
+        platform = findViewById(R.id.platform_textview)
         coverImage = findViewById(R.id.cover_imageview)
         releaseDate = findViewById(R.id.release_date_textview)
         esrbRating = findViewById(R.id.esrb_rating_textview)
