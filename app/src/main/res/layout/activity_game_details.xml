@@ -40,6 +40,8 @@
             android:layout_height="150dp"
             android:layout_gravity="center"
             android:layout_margin="5dp"
+            android:adjustViewBounds="false"
+            android:scaleType="fitXY"
             app:srcCompat="@drawable/csgo_cover"
             tools:srcCompat="@drawable/csgo_cover" />
 
