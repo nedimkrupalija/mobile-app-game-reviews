@@ -80,7 +80,7 @@ class GameDetailsFragment : Fragment() {
 
         val bottomNav: BottomNavigationView = requireActivity().findViewById(R.id.bottom_nav)
         val homeButton: BottomNavigationItemView = bottomNav.findViewById(R.id.homeItem)
-        bottomNav.findViewById<BottomNavigationItemView>(R.id.gameDetailsItem).isVisible = false
+        bottomNav.findViewById<BottomNavigationItemView>(R.id.gameDetailsItem).isEnabled = false
 
 
         homeButton.setOnClickListener{
