@@ -36,7 +36,7 @@ class HomeFragment : Fragment() {
         gameListAdapter = GameListAdapter(arrayListOf()) {game -> showDetails(game)}
         games.adapter = gameListAdapter
         gameListAdapter.updateGames(gamesList)
-        Log.d("POZVAN HOMEFRAGMENT", "HOMEFRAGMENT")
+
 
         val bundle: Bundle? = arguments
         var game: Game?
@@ -55,16 +55,7 @@ class HomeFragment : Fragment() {
     }
     private fun showDetails(game: Game?){
 
-        /* var arg = Bundle()
-        arg.putString("game_title", game.title)
 
-
-        val frag: Fragment = GameDetailsFragment()
-        frag.arguments = arg
-        fragmentManager?.commit {
-            replace(R.id.gameDetailsItem, frag)
-            setReorderingAllowed(true)
-            addToBackStack(null)*/
         val bundle = bundleOf("game_title" to game?.title)
         requireView().findNavController().navigate(R.id.action_homeItem_to_gameDetailsItem, bundle)
 

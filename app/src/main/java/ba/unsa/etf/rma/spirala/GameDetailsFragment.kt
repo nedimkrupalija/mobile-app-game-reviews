@@ -59,9 +59,7 @@ class GameDetailsFragment : Fragment() {
 
         reviews = view.findViewById(R.id.impression_recyclerView)
 
-        /*val gameTitle = arguments?.getString("game_title")
-        game = getDetails(gameTitle.toString())!!
-        populateDetails()*/
+
         val bundle: Bundle? = arguments
         if (bundle != null) {
             game = getDetails(bundle.getString("game_title", ""))!!
