@@ -1,17 +1,27 @@
 package ba.unsa.etf.rma.spirala
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import ba.unsa.etf.rma.spirala.GameData.Companion.getDetails
+import com.google.android.material.bottomnavigation.BottomNavigationItemView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class GameDetailsFragment : Fragment() {
     private lateinit var game: Game
@@ -25,12 +35,13 @@ class GameDetailsFragment : Fragment() {
     private lateinit var genre: TextView
     private lateinit var description: TextView
 
-    private lateinit var homeButton: Button
-    private lateinit var detailsButton: Button
 
     private lateinit var reviews: RecyclerView
 
     private lateinit var reviewsAdapter: GameReviewAdapter
+
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -46,28 +57,45 @@ class GameDetailsFragment : Fragment() {
         publisher = view.findViewById(R.id.publisher_textview)
         genre = view.findViewById(R.id.genre_textview)
         description = view.findViewById(R.id.description_textview)
-        homeButton = view.findViewById(R.id.home_button)
-        detailsButton = view.findViewById(R.id.details_button)
-        detailsButton.isEnabled = false
+
         reviews = view.findViewById(R.id.impression_recyclerView)
-        val extras = activity?.intent?.extras
-        if (extras != null) {
-            game = GameData.getDetails(extras.getString("game_title", ""))!!
+
+        /*val gameTitle = arguments?.getString("game_title")
+        game = getDetails(gameTitle.toString())!!
+        populateDetails()*/
+        val bundle: Bundle? = arguments
+        if (bundle != null) {
+            game = getDetails(bundle.getString("game_title", ""))!!
             populateDetails()
         }
+        
         reviews.layoutManager = LinearLayoutManager(
             activity, LinearLayoutManager.VERTICAL, false
         )
         reviewsAdapter = GameReviewAdapter(listOf())
         reviews.adapter = reviewsAdapter
-        var reviewsList: List<UserImpression>? = GameData.getDetails(game.title)?.userImpressions
+        var reviewsList: List<UserImpression>? = getDetails(game.title)?.userImpressions
         if (reviewsList != null) {
             reviewsAdapter.updateReview(reviewsList.sortedByDescending { it.timestamp })
         }
+
+        /*val homeButton: BottomNavigationItemView = view.findViewById(R.id.homeItem)
         homeButton.setOnClickListener{
-            showHomeLayout()
-        }
+            val bundle = bundleOf("game_title" to game.title)
+            requireView().findNavController().navigate(R.id.action_homeItem_to_gameDetailsItem, bundle)
+        }*/
+
+
         return view
+    }
+
+
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d("UGASEN DETAILS", "UGASEN DETAILS")
+
     }
     private fun populateDetails(){
 
@@ -87,9 +115,7 @@ class GameDetailsFragment : Fragment() {
 
     }
     private fun showHomeLayout(){
-        val intent = Intent(activity, HomeActivity::class.java).apply {
-            putExtra("game_title",game.title)
-        }
-        startActivity(intent)
+        val bundle = bundleOf("game_title" to game.title)
+        requireView().findNavController().navigate(R.id.action_gameDetailsItem_to_homeItem, bundle)
     }
 }
