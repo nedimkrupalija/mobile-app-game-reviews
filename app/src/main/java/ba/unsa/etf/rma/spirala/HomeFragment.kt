@@ -7,11 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.*
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ba.unsa.etf.rma.spirala.GameData.Companion.getAll
+import ba.unsa.etf.rma.spirala.GameData.Companion.getDetails
+import com.google.android.material.bottomnavigation.BottomNavigationItemView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class HomeFragment : Fragment() {
     private lateinit var games: RecyclerView
@@ -33,9 +38,22 @@ class HomeFragment : Fragment() {
         gameListAdapter.updateGames(gamesList)
         Log.d("POZVAN HOMEFRAGMENT", "HOMEFRAGMENT")
 
+        val bundle: Bundle? = arguments
+        var game: Game?
+
+
+        val bottomNav: BottomNavigationView = requireActivity().findViewById(R.id.bottom_nav)
+        val detailsItem: BottomNavigationItemView = bottomNav.findViewById(R.id.gameDetailsItem)
+        if(bundle?.getString("game_title") == null){
+            detailsItem.isVisible = false
+        }
+        detailsItem.setOnClickListener{
+            var game = getDetails(bundle!!.getString("game_title",""))
+            showDetails(game)
+        }
         return view
     }
-    private fun showDetails(game: Game){
+    private fun showDetails(game: Game?){
 
         /* var arg = Bundle()
         arg.putString("game_title", game.title)
@@ -47,9 +65,10 @@ class HomeFragment : Fragment() {
             replace(R.id.gameDetailsItem, frag)
             setReorderingAllowed(true)
             addToBackStack(null)*/
-        val bundle = bundleOf("game_title" to game.title)
+        val bundle = bundleOf("game_title" to game?.title)
         requireView().findNavController().navigate(R.id.action_homeItem_to_gameDetailsItem, bundle)
-        }
+
+    }
 
 
 }

@@ -5,13 +5,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.findNavController
@@ -79,11 +78,17 @@ class GameDetailsFragment : Fragment() {
             reviewsAdapter.updateReview(reviewsList.sortedByDescending { it.timestamp })
         }
 
-        /*val homeButton: BottomNavigationItemView = view.findViewById(R.id.homeItem)
+
+
+        val bottomNav: BottomNavigationView = requireActivity().findViewById(R.id.bottom_nav)
+        val homeButton: BottomNavigationItemView = bottomNav.findViewById(R.id.homeItem)
+        bottomNav.findViewById<BottomNavigationItemView>(R.id.gameDetailsItem).isVisible = false
+
+
         homeButton.setOnClickListener{
-            val bundle = bundleOf("game_title" to game.title)
-            requireView().findNavController().navigate(R.id.action_homeItem_to_gameDetailsItem, bundle)
-        }*/
+
+            showHomeLayout()
+        }
 
 
         return view
@@ -92,11 +97,7 @@ class GameDetailsFragment : Fragment() {
 
 
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Log.d("UGASEN DETAILS", "UGASEN DETAILS")
 
-    }
     private fun populateDetails(){
 
         title.text = game.title

@@ -30,7 +30,9 @@ class HomeActivity : AppCompatActivity() {
         val navView: BottomNavigationView = findViewById(R.id.bottom_nav)
         navView.setupWithNavController(navController)
 
-
+        navView.setOnClickListener{
+            Log.d("ABC", "ABC")
+        }
 
 
 
