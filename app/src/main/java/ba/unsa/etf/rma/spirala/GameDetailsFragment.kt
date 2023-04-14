@@ -3,6 +3,8 @@ package ba.unsa.etf.rma.spirala
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
+import android.graphics.drawable.GradientDrawable.Orientation
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -59,10 +61,16 @@ class GameDetailsFragment : Fragment() {
 
         reviews = view.findViewById(R.id.impression_recyclerView)
 
+        val orientation = resources.configuration.orientation
 
         val bundle: Bundle? = arguments
         if (bundle != null) {
             game = getDetails(bundle.getString("game_title", ""))!!
+
+            populateDetails()
+        }
+        else{
+            game = getDetails("CS:GO")!!
             populateDetails()
         }
         
@@ -77,17 +85,17 @@ class GameDetailsFragment : Fragment() {
         }
 
 
+        if(orientation == Configuration.ORIENTATION_PORTRAIT) {
+            val bottomNav: BottomNavigationView = requireActivity().findViewById(R.id.bottom_nav)
+            val homeButton: BottomNavigationItemView = bottomNav.findViewById(R.id.homeItem)
+            bottomNav.findViewById<BottomNavigationItemView>(R.id.gameDetailsItem).isEnabled = false
 
-        val bottomNav: BottomNavigationView = requireActivity().findViewById(R.id.bottom_nav)
-        val homeButton: BottomNavigationItemView = bottomNav.findViewById(R.id.homeItem)
-        bottomNav.findViewById<BottomNavigationItemView>(R.id.gameDetailsItem).isEnabled = false
 
+            homeButton.setOnClickListener {
 
-        homeButton.setOnClickListener{
-
-            showHomeLayout()
+                showHomeLayout()
+            }
         }
-
 
         return view
     }

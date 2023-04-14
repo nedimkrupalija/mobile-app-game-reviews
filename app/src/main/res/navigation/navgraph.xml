@@ -20,5 +20,8 @@
         <action
             android:id="@+id/action_gameDetailsItem_to_homeItem"
             app:destination="@id/homeItem" />
+        <action
+            android:id="@+id/action_gameDetailsItem_self"
+            app:destination="@id/gameDetailsItem" />
     </fragment>
 </navigation>
