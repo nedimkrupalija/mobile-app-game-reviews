@@ -12,6 +12,9 @@
             android:id="@+id/action_homeItem_to_gameDetailsItem"
             app:destination="@id/gameDetailsItem"
             app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_homeItem_self"
+            app:destination="@id/homeItem" />
     </fragment>
     <fragment
         android:id="@+id/gameDetailsItem"
@@ -23,5 +26,11 @@
         <action
             android:id="@+id/action_gameDetailsItem_self"
             app:destination="@id/gameDetailsItem" />
+        <action
+            android:id="@+id/action_homeItem_to_gameDetailsItem"
+            app:destination="@id/gameDetailsItem" />
+        <action
+            android:id="@+id/action_homeItem_self"
+            app:destination="@id/homeItem" />
     </fragment>
 </navigation>

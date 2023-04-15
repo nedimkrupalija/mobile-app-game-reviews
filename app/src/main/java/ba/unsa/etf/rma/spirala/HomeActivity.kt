@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
@@ -23,9 +24,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class HomeActivity : AppCompatActivity() {
 
-    override fun getSupportFragmentManager(): FragmentManager {
-        return super.getSupportFragmentManager()
-    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -35,7 +34,7 @@ class HomeActivity : AppCompatActivity() {
             val navController = navHostFragment.navController
             val navView: BottomNavigationView = findViewById(R.id.bottom_nav)
             navView.setupWithNavController(navController)
-
+            navController.navigate(R.id.action_homeItem_self)
         }
         else{
             val navHostFragment = supportFragmentManager.findFragmentById(R.id.detailsFragment) as NavHostFragment
