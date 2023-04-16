@@ -1,23 +1,14 @@
 package ba.unsa.etf.rma.spirala
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.content.res.Configuration
-import android.graphics.drawable.GradientDrawable.Orientation
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.os.bundleOf
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ba.unsa.etf.rma.spirala.GameData.Companion.getDetails
@@ -49,7 +40,7 @@ class GameDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_game_details, container, false)
-        title = view.findViewById(R.id.game_title_textview)
+        title = view.findViewById(R.id.item_title_textview)
         platform = view.findViewById(R.id.platform_textview)
         coverImage = view.findViewById(R.id.cover_imageview)
         releaseDate = view.findViewById(R.id.release_date_textview)

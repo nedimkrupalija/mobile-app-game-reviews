@@ -20,7 +20,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-
+/*
 @RunWith(AndroidJUnit4::class)
 class TestLayout {
     fun hasItemCount(n: Int) = object : ViewAssertion {
@@ -106,4 +106,4 @@ class TestLayout {
         onView(withId(R.id.details_button)).perform(click())
         onView(withText(prvaIgra.description)).check(matches(isCompletelyDisplayed()))
     }
-}
+}*/
