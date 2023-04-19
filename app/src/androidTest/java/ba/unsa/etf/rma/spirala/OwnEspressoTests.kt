@@ -30,6 +30,9 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class OwnEspressoTests {
 
+    /**
+     * Custom matcher kopiran iz prethodne spirale koji testira da li RecyclerView ima n elemenata
+     */
     fun hasItemCount(n: Int) = object : ViewAssertion {
         override fun check(view: View?, noViewFoundException: NoMatchingViewException?) {
             if (noViewFoundException != null) {
@@ -244,5 +247,7 @@ class OwnEspressoTests {
 
         onView(withId(R.id.gameDetailsItem)).perform(click())
         onView(withId(R.id.item_title_textview)).check(matches(withText("Fortnite")))
+        rule.scenario.close()
     }
+
 }
