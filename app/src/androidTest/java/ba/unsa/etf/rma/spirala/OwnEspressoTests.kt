@@ -189,9 +189,60 @@ class OwnEspressoTests {
 
 
         rule.scenario.close()
+    }
 
 
+    /**
+     * Ovaj test je napravljen uglavnom zato sto se prije desavalo da aplikacija crasha kada se iz
+     * details fragmenta prebaci u landscape i vrati nazad. Upravo se to testira, prvo se otvori
+     * Among Us pa se okrene orijentacija i tu se testira da li se jos moze sve ispravno izabrati neka
+     * igrica u home fragmentu. Nakon toga se vraca orijentacija u portrait i testira se da li jos
+     * sve ispravno funkcionise (biranje igrice i navbar).
+     */
+    @Test
+    fun landscapeTest2(){
 
 
+        onView(withId(R.id.game_list)).perform(RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>(allOf(
+            hasDescendant(withText("Among Us"))
+        ),click()))
+
+        rule.scenario.onActivity {
+            it.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        }
+
+        onView(withId(R.id.game_list)).perform(RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>(
+            allOf(
+                hasDescendant(withSubstring("Most Wanted"))
+            ), click()))
+
+        onView(withIndex(withId(R.id.item_title_textview),0)).check(matches(withText("Need For Speed: Most Wanted")))
+
+        onView(withId(R.id.game_list)).perform(RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>(
+            allOf(
+                hasDescendant(withSubstring("League of Legends"))
+            ), click()))
+        onView(withIndex(withId(R.id.item_title_textview),0)).check(matches(withText("League of Legends")))
+
+        rule.scenario.onActivity {
+            it.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
+
+        onView(withId(R.id.bottom_nav)).check(matches(isDisplayed()))
+        onView(withId(R.id.homeItem)).check(matches(isDisplayed()))
+
+        onView(withId(R.id.game_list)).perform(RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>(
+            allOf(
+                hasDescendant(withSubstring("Fortnite"))
+            ), click()))
+        onView(withIndex(withId(R.id.item_title_textview),0)).check(matches(withText("Fortnite")))
+
+        onView(withId(R.id.homeItem)).perform(click())
+        onView(withId(R.id.game_list)).check(matches(
+            isDisplayed()
+        )).check(hasItemCount(10))
+
+        onView(withId(R.id.gameDetailsItem)).perform(click())
+        onView(withId(R.id.item_title_textview)).check(matches(withText("Fortnite")))
     }
 }
