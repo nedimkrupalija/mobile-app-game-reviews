@@ -1,26 +1,31 @@
 package ba.unsa.etf.rma.spirala
 
+import android.annotation.SuppressLint
+import android.content.pm.ActivityInfo
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import androidx.test.core.app.launchActivity
-import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.NoMatchingViewException
 import androidx.test.espresso.ViewAssertion
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.assertion.PositionAssertions.isCompletelyAbove
-import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.assertion.PositionAssertions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ba.unsa.etf.rma.spirala.GameData.Companion.getAll
 import org.hamcrest.CoreMatchers
 import org.hamcrest.CoreMatchers.*
+import org.hamcrest.Description
+import org.hamcrest.Matcher
+import org.hamcrest.TypeSafeMatcher
 import org.junit.Assert
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+
 
 @RunWith(AndroidJUnit4::class)
 class OwnEspressoTests {
@@ -39,7 +44,8 @@ class OwnEspressoTests {
             )
         }
     }
-
+    @get:Rule
+     public val rule: ActivityScenarioRule<HomeActivity> = ActivityScenarioRule(HomeActivity::class.java)
 
     /**
      * Ovim testom se testira da li aplikacija ispravno funkcionise u portrait modu
@@ -58,12 +64,12 @@ class OwnEspressoTests {
      */
     @Test
     fun portraitTest() {
-        launchActivity<HomeActivity>()
+
         val game = getAll().get(1)
         onView(withId(R.id.gameDetailsItem)).check(matches(not(isEnabled())))
 
         onView(withId(R.id.game_list))
-            .perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(0)).check(
+            .perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(1)).check(
                 matches(
                     allOf(
                         hasDescendant(withId(R.id.item_title_textview)),
@@ -98,5 +104,94 @@ class OwnEspressoTests {
 
         onView(withId(R.id.esrb_rating_textview)).check(matches(withText("ESRB Rating: Mature")))
         onView(withId(R.id.publisher_textview)).check(matches(withText(containsString("Activision"))))
+        rule.scenario.close()
+    }
+
+    /**
+     * Custom matcher koji je bio potreban zato sto je izbacivalo gresku da se nalazi vise view-ova
+     * sa istim nazivom (ID-om) u hijerarhiji. Npr homeFragment i detailsFragment. Pa ovaj matcher
+     * uzima view sa zadatim indexom.
+     */
+    fun withIndex(matcher: Matcher<View?>, index: Int): Matcher<View?>? {
+        return object : TypeSafeMatcher<View>() {
+            var currentIndex = 0
+            var viewObjHash = 0
+
+            @SuppressLint("DefaultLocale")
+            override fun describeTo(description: Description) {
+                description.appendText(String.format("with index: %d ", index))
+                matcher.describeTo(description)
+            }
+
+            override fun matchesSafely(view: View): Boolean {
+                if (matcher.matches(view) && currentIndex++ == index) {
+                    viewObjHash = view.hashCode()
+                }
+                return view.hashCode() == viewObjHash
+            }
+        }
+    }
+
+
+    /**
+     * Test koji ispituje landscape mode. Prvo se telefon okrene u landscape mode, a zatim se provjeri
+     * da li su fragmenti home i details prikazani. Provjeri se da li je upaljena prva igrica (CS:GO) na
+     * details ekranu, a zatim da li na home fragmentu ima 10 igrica. Zatim se provjerava da li jos radi
+     * klik na neku igricu (u ovom slucaju World of Tanks) te da li na details fragmentu je zaista
+     * ta igra prikazana.
+     */
+    @Test
+    fun landscapeTest(){
+        rule.scenario.onActivity {
+            it.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        }
+
+        val game = getAll().get(5)
+        // Test da li je details ispravno otvoren na prvu igricu (CS:GO)
+       onView(withIndex(withId(R.id.homeFragment),0)).check(matches(isDisplayed()))
+        onView(withIndex(withId(R.id.detailsFragment),0)).check(matches(isDisplayed()))
+        onView(withIndex(withId(R.id.detailsFragment),0)).check(matches(allOf(
+            hasDescendant(withText("CS:GO")),
+            hasDescendant(withSubstring("Valve")),
+            hasDescendant(withSubstring("was released")),
+            hasDescendant(withSubstring("Mature")),
+            hasDescendant(withSubstring("Steam")),
+            hasDescendant(withId(R.id.impression_recyclerView))
+        )))
+        onView(withId(R.id.impression_recyclerView)).check((hasItemCount(5)))
+
+        // Test da li je home fragment ispravno otvoren sa 10 igara i klik na World of Tanks
+        onView(withIndex(withId(R.id.game_list),0)).check(hasItemCount(10))
+        onView(withId(R.id.game_list))
+            .perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(5)).check(
+                matches(
+                    allOf(
+                        hasDescendant(withId(R.id.item_title_textview)),
+                        hasDescendant(withId(R.id.game_rating_textview)),
+                        hasDescendant(withId(R.id.release_date)),
+                        hasDescendant(withId(R.id.game_platform_textview)),
+                        hasDescendant(withId(R.id.game_rating_textview)),
+
+                        )
+                )).perform(RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>(allOf(
+            hasDescendant(withText(game.title)),
+            hasDescendant(withText(game.releaseDate)),
+            hasDescendant(withText(game.rating.toString()))
+        ),click()))
+
+        //Provjera da li je to zaista world of tanks
+        onView(withIndex(withId(R.id.detailsFragment),0)).check(matches(allOf(
+            hasDescendant(withText("World of Tanks")),
+            hasDescendant(withSubstring("Wargaming")),
+            hasDescendant(withSubstring("The player takes")),
+            hasDescendant(withSubstring("Teen"))
+        )))
+
+
+        rule.scenario.close()
+
+
+
+
     }
 }
