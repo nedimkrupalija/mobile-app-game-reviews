@@ -1,6 +1,7 @@
 package ba.unsa.etf.rma.spirala
 
 import android.annotation.SuppressLint
+import android.app.Application
 import android.content.pm.ActivityInfo
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
@@ -248,6 +249,27 @@ class OwnEspressoTests {
         onView(withId(R.id.gameDetailsItem)).perform(click())
         onView(withId(R.id.item_title_textview)).check(matches(withText("Fortnite")))
         rule.scenario.close()
+    }
+
+
+    /**
+     * Jednostavan test koji testira raspored elemenata u landscape orijentaciji
+     */
+    @Test
+    fun landscapeLayoutTest(){
+        rule.scenario.onActivity {
+            it.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        }
+        onView(withId(R.id.esrb_rating_textview)).check(isCompletelyAbove(withId(R.id.developer_textview)))
+        onView(withId(R.id.publisher_textview)).check(isCompletelyBelow(withId(R.id.developer_textview)))
+        onView(withId(R.id.impression_recyclerView)).check(
+            isCompletelyBelow(withId(R.id.publisher_textview))
+        )
+        onView(withIndex(withId(R.id.homeFragment),0)).check(isCompletelyLeftOf(withId(R.id.genre_textview)))
+        onView(withId(R.id.search_button)).check(isCompletelyRightOf(withId(R.id.search_query_edittext)))
+
+        onView(withId(R.id.game_list)).check(isCompletelyBelow(withId(R.id.logo_image)))
+
     }
 
 }
