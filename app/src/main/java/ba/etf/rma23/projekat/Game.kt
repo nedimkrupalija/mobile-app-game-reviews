@@ -1,4 +1,4 @@
-package ba.unsa.etf.rma.spirala
+package ba.etf.rma23.projekat
 
 data class Game(
     val title: String,

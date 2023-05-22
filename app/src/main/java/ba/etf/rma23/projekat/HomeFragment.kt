@@ -1,22 +1,20 @@
-package ba.unsa.etf.rma.spirala
+package ba.etf.rma23.projekat
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.core.os.bundleOf
-import androidx.core.view.isVisible
 import androidx.fragment.app.*
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import ba.unsa.etf.rma.spirala.GameData.Companion.getAll
-import ba.unsa.etf.rma.spirala.GameData.Companion.getDetails
+import ba.etf.rma23.projekat.GameData.Companion.getAll
+import ba.etf.rma23.projekat.GameData.Companion.getDetails
+import ba.etf.rma23.projekat.R
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 

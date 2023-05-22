@@ -1,7 +1,7 @@
-package ba.unsa.etf.rma.spirala
+package ba.etf.rma23.projekat
 
 data class UserReview(
     override val userName: String,
     override val timestamp: Long,
     val review: String
-):UserImpression(userName, timestamp)
+): UserImpression(userName, timestamp)

@@ -1,4 +1,4 @@
-package ba.unsa.etf.rma.spirala
+package ba.etf.rma23.projekat
 
 import org.junit.Test
 

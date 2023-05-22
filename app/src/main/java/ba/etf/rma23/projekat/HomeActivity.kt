@@ -1,4 +1,4 @@
-package ba.unsa.etf.rma.spirala
+package ba.etf.rma23.projekat
 
 import android.content.Intent
 import android.content.res.Configuration
@@ -19,6 +19,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import ba.etf.rma23.projekat.R
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 

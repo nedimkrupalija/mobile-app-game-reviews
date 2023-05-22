@@ -1,7 +1,6 @@
-package ba.unsa.etf.rma.spirala
+package ba.etf.rma23.projekat
 
 import java.sql.Date
-import java.sql.Time
 
 
 class GameData {

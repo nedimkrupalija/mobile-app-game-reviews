@@ -1,7 +1,6 @@
-package ba.unsa.etf.rma.spirala
+package ba.etf.rma23.projekat
 
 import android.annotation.SuppressLint
-import android.app.Application
 import android.content.pm.ActivityInfo
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
@@ -16,7 +15,7 @@ import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import ba.unsa.etf.rma.spirala.GameData.Companion.getAll
+import ba.etf.rma23.projekat.GameData.Companion.getAll
 import org.hamcrest.CoreMatchers
 import org.hamcrest.CoreMatchers.*
 import org.hamcrest.Description
@@ -26,6 +25,7 @@ import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+
 
 
 @RunWith(AndroidJUnit4::class)
@@ -49,7 +49,7 @@ class OwnEspressoTests {
         }
     }
     @get:Rule
-     public val rule: ActivityScenarioRule<HomeActivity> = ActivityScenarioRule(HomeActivity::class.java)
+    public val rule: ActivityScenarioRule<HomeActivity> = ActivityScenarioRule(HomeActivity::class.java)
 
     /**
      * Ovim testom se testira da li aplikacija ispravno funkcionise u portrait modu
@@ -82,7 +82,7 @@ class OwnEspressoTests {
                         hasDescendant(withId(R.id.game_platform_textview)),
                         hasDescendant(withId(R.id.game_rating_textview)),
 
-                    )
+                        )
                 )
             ).check(hasItemCount(10)).perform(RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>(allOf(
                 hasDescendant(withText(game.title)),
@@ -94,8 +94,8 @@ class OwnEspressoTests {
 
         onView(withId(R.id.item_title_textview)).check(
             isCompletelyAbove(
-            withId(R.id.esrb_rating_textview)
-        ))
+                withId(R.id.esrb_rating_textview)
+            ))
         onView(withId(R.id.developer_textview)).check(isCompletelyAbove(withId(R.id.genre_textview)))
         onView(withId(R.id.description_textview)).check(isCompletelyAbove(withId(R.id.impression_recyclerView)))
 
@@ -152,7 +152,7 @@ class OwnEspressoTests {
 
         val game = getAll().get(5)
         // Test da li je details ispravno otvoren na prvu igricu (CS:GO)
-       onView(withIndex(withId(R.id.homeFragment),0)).check(matches(isDisplayed()))
+        onView(withIndex(withId(R.id.homeFragment),0)).check(matches(isDisplayed()))
         onView(withIndex(withId(R.id.detailsFragment),0)).check(matches(isDisplayed()))
         onView(withIndex(withId(R.id.detailsFragment),0)).check(matches(allOf(
             hasDescendant(withText("CS:GO")),
@@ -178,10 +178,10 @@ class OwnEspressoTests {
 
                         )
                 )).perform(RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>(allOf(
-            hasDescendant(withText(game.title)),
-            hasDescendant(withText(game.releaseDate)),
-            hasDescendant(withText(game.rating.toString()))
-        ),click()))
+                hasDescendant(withText(game.title)),
+                hasDescendant(withText(game.releaseDate)),
+                hasDescendant(withText(game.rating.toString()))
+            ),click()))
 
         //Provjera da li je to zaista world of tanks
         onView(withIndex(withId(R.id.detailsFragment),0)).check(matches(allOf(
