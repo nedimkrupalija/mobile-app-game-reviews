@@ -1,5 +1,7 @@
 package ba.etf.rma23.projekat
 
+import com.google.gson.annotations.SerializedName
+
 data class Game(
     val title: String,
     val platform: String,
@@ -11,5 +13,5 @@ data class Game(
     val publisher: String,
     val genre: String,
     val description: String,
-    val userImpressions: List<UserImpression>,
+    val userImpressions: List<UserImpression>?,
 )
