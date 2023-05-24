@@ -7,7 +7,7 @@ class GameData {
     companion object{
         fun getAll(): List<Game>{
             return listOf(
-                Game("CS:GO",
+                Game(0,"CS:GO",
                     "PC, PS, XBOX", "21.08.2012", 9.3,
                     "csgo_cover", "Mature","Valve",
                     "Steam","Tactical Shooter","Counter-Strike: Global Offensive (CS:GO) " +
@@ -29,7 +29,7 @@ class GameData {
                                 " your choice for 90% of the time. "),
                         UserRating("Another generic name", Date.valueOf("2018-01-01").time,4.0)
                     )),
-                Game("Call of Duty: Warzone",
+                Game(0,"Call of Duty: Warzone",
                     "PC, PS, XBOX", "10.03.2020", 9.2,
                     "warzone_cover", "Mature","Raven Software, Infinity Ward",
                     "Activision","FPS Battle Royale","The Battle Royale mode" +
@@ -56,7 +56,7 @@ class GameData {
                                     " or not."),
                             UserRating("Nikolaj", Date.valueOf("2023-03-05").time,9.5)
                             )),
-                        Game("Need For Speed: Most Wanted",
+                        Game(0,"Need For Speed: Most Wanted",
                 "PC, PS, XBOX", "11.11.2005", 8.2,
                 "nfsmw_cover", "Mild Violence","Electronic Arts",
                 "Electronic Arts","Racing","In the game, players take part " +
@@ -65,7 +65,7 @@ class GameData {
                                     " the game's development and release) that can be upgraded and" +
                                     " customized with new parts while contending with the involvement " +
                                     "of the police in their efforts to impede the player.",emptyList()),
-                Game("PlayerUnkown's Battlegrounds",
+                Game(0,"PlayerUnkown's Battlegrounds",
                     "PC", "23.03.2017", 8.5,
                     "pubg_cover", "Violent 16+","PUBG Studios",
                     "KRAFTON, Tencent Games","FPS Battle Royale","PUBG is a " +
@@ -74,7 +74,7 @@ class GameData {
                             "where players fight to remain the last alive. Players can choose" +
                             " to enter the match solo, duo, or with a small team of up to four people." +
                             " The last person or team alive wins the match.",emptyList()),
-                Game("League of Legends",
+                Game(0,"League of Legends",
                     "PC", "27.10.2009", 7.6,
                     "lol_cover", "Teen","Riot Games",
                     "Riot Games","Action role-playing game","eague of Legends " +
@@ -86,7 +86,7 @@ class GameData {
                             " be acquired to increase champions' strength,[6] and are bought with gold," +
                             " which players accrue passively over time and earn actively by " +
                             "defeating the opposing team's minions,champions, or defensive structures.",emptyList()),
-                Game("World of Tanks",
+                Game(0,"World of Tanks",
                     "PC, PS, XBOX", "12.08.2010", 9.0,
                     "wot_cover", "Teen","Wargaming",
                     "Wargaming","Action role-playing game","The player takes " +
@@ -97,7 +97,7 @@ class GameData {
                             "A simple random match is won either by destroying all vehicles on the " +
                             "opposing team or capturing the opposing team's base by staying in it " +
                             "for long enough without being damaged by another tank. ",emptyList()),
-                Game("Counter-Strike 1.6",
+                Game(0,"Counter-Strike 1.6",
                     "PC", "12.09.2003", 9.7,
                     "cs_cover", "Teen","Valve",
                     "Valve Corp.","First Person Shooter","Counter-Strike " +
@@ -105,7 +105,7 @@ class GameData {
                             " Two opposing teams—the Terrorists and the Counter Terrorists—compete " +
                             "in game modes to complete objectives, such as securing a location to " +
                             "plant or defuse a bomb and rescuing or guarding hostages",emptyList()),
-                Game("Fortnite",
+                Game(0,"Fortnite",
                     "PC, PS, XBOX", "21.07.2021", 8.6,
                     "fortnite_cover", "Teen","Epic Games",
                     "Epic Games, Warner Bros","Battle Royale","Fortnite is an " +
@@ -118,7 +118,7 @@ class GameData {
                             " fight off zombie-like creatures and defend objects with traps and " +
                             "fortifications they can build; and Fortnite Creative, in which players" +
                             " are given complete freedom to create worlds and battle arenas.",emptyList()),
-                        Game("Among Us",
+                        Game(0,"Among Us",
                 "PC, PS, XBOX", "15.06.2018", 9.0,
                 "amoungus_cover", "Everyone 10+","InnerSloth LLC.",
                 "InnerSloth LLC.","Survival party game","Among Us is a " +
@@ -134,7 +134,7 @@ class GameData {
                                     "by killing or ejecting all Crewmates,[e] or by sabotaging a" +
                                     " critical system on the map (provided the Crewmates do not " +
                                     "resolve it in time).",emptyList()),
-                Game("Rocket League",
+                Game(0,"Rocket League",
                     "PC, PS, XBOX", "15.06.2018", 9.0,
                     "rl_cover", "Everyone","Psyonix",
                     "Psyonix .","Racing football game","Rocket League's " +

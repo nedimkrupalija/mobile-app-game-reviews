@@ -2,12 +2,15 @@ package ba.etf.rma23.projekat
 
 import android.content.Intent
 import android.content.res.Configuration
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.webkit.WebSettings
+import android.webkit.WebView
 import androidx.core.os.ConfigurationCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentContainer
@@ -20,6 +23,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import ba.etf.rma23.projekat.R
+import ba.etf.rma23.projekat.data.repositories.AccountGamesRepository
 import ba.etf.rma23.projekat.data.repositories.GameSerialized
 import ba.etf.rma23.projekat.data.repositories.GamesRepository
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
@@ -31,7 +35,7 @@ import kotlinx.coroutines.launch
 
 class HomeActivity : AppCompatActivity() {
 
-    val scope = CoroutineScope(Job() + Dispatchers.Main)
+    private val scope = CoroutineScope(Job() + Dispatchers.Main)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -43,6 +47,8 @@ class HomeActivity : AppCompatActivity() {
             navView.setupWithNavController(navController)
             navController.navigate(R.id.action_homeItem_self)
             search("Counter")
+            remove()
+
         }
         else{
             val navHostFragment = supportFragmentManager.findFragmentById(R.id.detailsFragment) as NavHostFragment
@@ -58,7 +64,18 @@ class HomeActivity : AppCompatActivity() {
      fun search(query: String){
         scope.launch{
             val result = GamesRepository.getGamesByName(query)
-            print(result.toString())
+
+        }
+    }
+    fun login(){
+        scope.launch {
+            val result = AccountGamesRepository.getSavedGames()
+
+        }
+    }
+    fun remove(){
+        scope.launch {
+            val result = AccountGamesRepository.removeGame(5)
         }
     }
 

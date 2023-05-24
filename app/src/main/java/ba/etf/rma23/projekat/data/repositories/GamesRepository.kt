@@ -6,7 +6,10 @@ import ba.etf.rma23.projekat.UserImpression
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.Console
+import java.math.RoundingMode
+import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.round
 import kotlin.time.Duration.Companion.days
 
 sealed class Result<out R> {
@@ -45,7 +48,12 @@ object GamesRepository {
                     }
                 }
                 //platform = serializedGame.platformList.toString()
-                rating = serializedGame.ratingValue ?: -1.0
+                if(serializedGame.ratingValue!=null){
+                    var temp : Double= serializedGame.ratingValue/10.0
+                    temp = temp.toBigDecimal().setScale(1, RoundingMode.UP).toDouble()
+                    rating = temp
+                }
+                else rating = 0.0
                 releaseDate = getDateFromEpoch(serializedGame.releaseDate)
                 coverImage = serializedGame.cover?.url.toString()
                 if(serializedGame.ESRBList!=null) {
@@ -85,16 +93,14 @@ object GamesRepository {
 
                 description = serializedGame.description.toString()
                 userImpressions = null
-                gameList.add(index, Game(title,platform, releaseDate, rating, coverImage, esrbRating, developer, publisher, genre, description, userImpressions))
+                gameList.add(index, Game(serializedGame.id, title,platform, releaseDate, rating, coverImage, esrbRating, developer, publisher, genre, description, userImpressions))
                 index += 1
             }
         }
         return gameList
     }
 
-    private fun getDateFromEpoch(epoch : Long) : String {
-        return java.time.format.DateTimeFormatter.ISO_INSTANT.format(java.time.Instant.ofEpochSecond(epoch))
-    }
+
     fun getGamesSafe(name : String):List<Game>{
         return listOf()
     }
@@ -110,6 +116,11 @@ object GamesRepository {
             val responseBody = response.body()
             return@withContext responseBody
         }
+    }
+
+    private fun getDateFromEpoch(epoch : Long) : String {
+        val format = SimpleDateFormat("dd.MM.yyyy")
+        return format.format(epoch*1000L)
     }
 
 }

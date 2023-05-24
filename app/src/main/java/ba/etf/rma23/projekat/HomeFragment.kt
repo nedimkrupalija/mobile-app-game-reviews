@@ -1,11 +1,16 @@
 package ba.etf.rma23.projekat
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebSettings
+import android.webkit.WebView
 import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.*
 import androidx.navigation.findNavController
@@ -15,8 +20,13 @@ import androidx.recyclerview.widget.RecyclerView
 import ba.etf.rma23.projekat.GameData.Companion.getAll
 import ba.etf.rma23.projekat.GameData.Companion.getDetails
 import ba.etf.rma23.projekat.R
+import ba.etf.rma23.projekat.data.repositories.GamesRepository
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
     private lateinit var games: RecyclerView
@@ -24,6 +34,8 @@ class HomeFragment : Fragment() {
     private var gamesList = getAll()
     private lateinit var homeButton: Button
     private lateinit var detailsButton: Button
+    private lateinit var searchButton: Button
+    private lateinit var searchText: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,7 +50,8 @@ class HomeFragment : Fragment() {
         gameListAdapter.updateGames(gamesList)
 
         val orientation = resources.configuration.orientation
-
+        searchButton = view.findViewById(R.id.search_button)
+        searchText = view.findViewById(R.id.search_query_edittext)
 
         val bundle: Bundle? = arguments
         var game: Game?
@@ -56,6 +69,11 @@ class HomeFragment : Fragment() {
                 showDetails(game)
             }
         }
+        searchButton.setOnClickListener {
+            getGamesByName(searchText.text.toString())
+        }
+
+
         return view
     }
     private fun showDetails(game: Game?){
@@ -70,6 +88,27 @@ class HomeFragment : Fragment() {
             navHostFragment.navController.navigate(R.id.action_gameDetailsItem_self, bundle)
         }
 
+    }
+
+    private fun getGamesByName(query: String){
+        val scope = CoroutineScope(Job() + Dispatchers.Main)
+
+        scope.launch {
+            val result = GamesRepository.getGamesByName(query)
+            when(result){
+                is List<Game> -> onSucces(result)
+                else -> onError()
+            }
+        }
+    }
+    fun onSucces(games:List<Game>){
+        val toast = Toast.makeText(context, "Found games", Toast.LENGTH_SHORT)
+        toast.show()
+        gameListAdapter.updateGames(games)
+    }
+    fun onError(){
+        val toast = Toast.makeText(context, "Search error", Toast.LENGTH_SHORT)
+        toast.show()
     }
 
 
