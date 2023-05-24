@@ -14,9 +14,9 @@ public interface ApiIGDB {
             "Content-Type: application/json")
     @POST("games")
     suspend fun getGamesByName(
-        //@Query("search")  query: String,
+        @Query("search")  query: String,
         //id, age_ratings.rating, rating, cover.url, first_release_date, genres.name, involved_companies.company.name, name, platforms.name, summary
-        @Query("fields") fields: String = "id, age_ratings.rating, rating, cover.url, first_release_date, genres.name, involved_companies.company.name, name, platforms.name, summary"
+        @Query("fields") fields: String = "id, age_ratings.category, age_ratings.rating, rating, cover.url, first_release_date, genres.name, involved_companies.company.name, involved_companies.publisher, involved_companies.developer, name, platforms.name, summary"
         //@Query("fields") fields: String = "*"
         //@Query("fields") fields : String = "id,name"
  ) : Response<List<GameSerialized>>

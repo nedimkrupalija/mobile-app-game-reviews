@@ -58,7 +58,7 @@ class HomeActivity : AppCompatActivity() {
      fun search(query: String){
         scope.launch{
             val result = GamesRepository.getGamesByName(query)
-            Log.d(result.toString(), "ABC")
+            print(result.toString())
         }
     }
 
