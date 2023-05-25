@@ -7,10 +7,11 @@ import retrofit2.Response
 
 object AccountGamesRepository {
     fun setHash(acHash: String): Boolean{
+        Account.acHash = acHash
         return true
     }
     fun getHash(): String{
-        return ""
+        return Account.acHash
     }
     suspend fun getSavedGames():List<Game>{
         val responses = getUserGamesReponse()
@@ -31,18 +32,30 @@ object AccountGamesRepository {
     }
      suspend fun removeGame(id: Int): Boolean{
          val rez = removeGameHelp(id)
-         print("REZULTATFJ: " + rez!!.message + "\n")
-        return rez.message!="null"
+         //Mozda
+         Account.favoriteGames = getSavedGames()
+        return rez!!.message!="null"
     }
-    fun removeNonSafe():Boolean{
+    suspend fun removeNonSafe():Boolean{
+        for(game in Account.favoriteGames){
+            if(!checkGameRating(game)) removeGame(game.id)
+        }
+        //Update games
+        Account.favoriteGames = getSavedGames()
         return true
     }
-    suspend fun getGamesContainingString(query:String):List<Game>{
+     suspend fun getGamesContainingString(query:String):List<Game>{
         val response = getUserGamesReponse()
         return GamesRepository.getGamesByName(query)!!
+         //Mozda implementacija
+        //return Account.gamesWithString(query)
     }
     fun setAge(age:Int):Boolean{
-        return true
+        if(age in 3..100){
+            Account.age = age
+            return true
+        }
+        return false
     }
     suspend fun login() : String? {
         return withContext(Dispatchers.IO){
@@ -67,6 +80,18 @@ object AccountGamesRepository {
             val responseBody = response.body()
             return@withContext responseBody
         }
+    }
+
+    private fun checkGameRating(game: Game) : Boolean{
+        when(game.esrbRating){
+            "RP" -> return true
+            "E" -> return true
+            "E10" -> return Account.age >= 10
+            "T" -> return Account.age >= 13
+            "M" -> return Account.age >= 17
+            "AO" -> return Account.age >= 18
+        }
+        return true
     }
 
 }

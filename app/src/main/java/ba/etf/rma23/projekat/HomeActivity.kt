@@ -48,7 +48,8 @@ class HomeActivity : AppCompatActivity() {
             navController.navigate(R.id.action_homeItem_self)
             search("Counter")
             remove()
-
+            /*val intent: Intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://rma23ws.onrender.com/login"))
+            startActivity(intent)*/
         }
         else{
             val navHostFragment = supportFragmentManager.findFragmentById(R.id.detailsFragment) as NavHostFragment
