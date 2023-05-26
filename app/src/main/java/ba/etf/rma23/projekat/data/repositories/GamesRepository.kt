@@ -101,8 +101,14 @@ object GamesRepository {
     }
 
 
-    fun getGamesSafe(name : String):List<Game>{
-        return listOf()
+    suspend fun getGamesSafe(name : String):List<Game>{
+        val games : MutableList<Game> = getGamesByName(name) as MutableList<Game>
+        for(game in games){
+            if(!AccountGamesRepository.checkGameRating(game)){
+                games.remove(game)
+            }
+        }
+        return games
     }
     fun sortGames() : List<Game>{
         return listOf()

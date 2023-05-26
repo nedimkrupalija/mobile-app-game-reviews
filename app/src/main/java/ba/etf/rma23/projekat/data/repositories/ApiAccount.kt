@@ -1,10 +1,8 @@
 package ba.etf.rma23.projekat.data.repositories
 
 import retrofit2.Response
-import retrofit2.http.DELETE
-import retrofit2.http.GET
-import retrofit2.http.Headers
-import retrofit2.http.Path
+import retrofit2.http.*
+import java.util.Objects
 
 interface ApiAccount {
     @Headers("Content-Type: application/json")
@@ -21,5 +19,15 @@ interface ApiAccount {
         @Path("aid") acHash: String ,
         @Path("gid") gameId: Int
     ) : Response<DeletedGameResponse>
+
+    /**
+     * Popraviti ne radi
+     */
+    @Headers("Content-Type: application/json")
+    @POST("account/{aid}/games")
+    suspend fun saveGame(
+        @Path("aid") acHash: String,
+        @Body ab : GameBodyResponse
+    ) : Response<Void>
 
 }

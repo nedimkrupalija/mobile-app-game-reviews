@@ -23,6 +23,7 @@ import ba.etf.rma23.projekat.R
 import ba.etf.rma23.projekat.data.repositories.GamesRepository
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -61,7 +62,7 @@ class HomeFragment : Fragment() {
             val detailsItem: BottomNavigationItemView = bottomNav.findViewById(R.id.gameDetailsItem)
             bottomNav.findViewById<BottomNavigationItemView>(R.id.homeItem).isEnabled = false
 
-            if (bundle?.getString("game_title") == null) {
+            if (bundle?.getString("game") == null) {
                 detailsItem.isEnabled = false
             }
             detailsItem.setOnClickListener {
@@ -77,8 +78,8 @@ class HomeFragment : Fragment() {
         return view
     }
     private fun showDetails(game: Game?){
-
-        val bundle = bundleOf("game_title" to game?.title)
+        val gameString = Gson().toJson(game)
+        val bundle = bundleOf("game" to gameString)
         if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
             requireView().findNavController()
                 .navigate(R.id.action_homeItem_to_gameDetailsItem, bundle)

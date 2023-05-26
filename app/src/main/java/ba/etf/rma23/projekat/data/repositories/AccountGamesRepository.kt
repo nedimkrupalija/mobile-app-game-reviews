@@ -27,8 +27,12 @@ object AccountGamesRepository {
     return gameList
     }
     // Promijeniti upitnik
-    fun saveGame() : Game?{
-        return null
+    suspend fun saveGame(game: Game)  {
+        return withContext(Dispatchers.IO){
+            AccountApiConfig.retrofit.saveGame("da694fdf-cd2e-4da6-b80d-e1a81e41bd25", GameBodyResponse(AccountGameResponse(game.id,game.title)))
+
+            return@withContext
+        }
     }
      suspend fun removeGame(id: Int): Boolean{
          val rez = removeGameHelp(id)
@@ -82,7 +86,7 @@ object AccountGamesRepository {
         }
     }
 
-    private fun checkGameRating(game: Game) : Boolean{
+    fun checkGameRating(game: Game) : Boolean{
         when(game.esrbRating){
             "RP" -> return true
             "E" -> return true

@@ -6,16 +6,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ba.etf.rma23.projekat.GameData.Companion.getDetails
+import ba.etf.rma23.projekat.data.repositories.AccountGamesRepository
+import ba.etf.rma23.projekat.data.repositories.GamesRepository
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class GameDetailsFragment : Fragment() {
     private lateinit var game: Game
@@ -29,6 +39,8 @@ class GameDetailsFragment : Fragment() {
     private lateinit var genre: TextView
     private lateinit var description: TextView
 
+    private lateinit var addButton: Button
+    private lateinit var deleteButton: Button
 
     private lateinit var reviews: RecyclerView
 
@@ -52,15 +64,19 @@ class GameDetailsFragment : Fragment() {
         genre = view.findViewById(R.id.genre_textview)
         description = view.findViewById(R.id.description_textview)
 
+        addButton = view.findViewById(R.id.insert_game_button)
+        deleteButton = view.findViewById(R.id.delete_game_button)
+
         reviews = view.findViewById(R.id.impression_recyclerView)
 
         val orientation = resources.configuration.orientation
 
         val bundle: Bundle? = arguments
         if (bundle != null) {
-            game = getDetails(bundle.getString("game_title", ""))!!
-
-            populateDetails()
+            val gameString = bundle.getString("game")
+            game = Gson().fromJson(gameString, Game::class.java)
+            print(game.toString() + "\n")
+           populateDetails()
         }
         else{
             game = getDetails("CS:GO")!!
@@ -90,12 +106,29 @@ class GameDetailsFragment : Fragment() {
             }
         }
 
+        addButton.setOnClickListener {
+            addGameToFavorites(game)
+        }
+
+        deleteButton.setOnClickListener {
+
+        }
+
+
         return view
     }
 
 
 
+    private fun addGameToFavorites(game: Game){
+        val scope = CoroutineScope(Job() + Dispatchers.Main)
 
+        scope.launch {
+            AccountGamesRepository.saveGame(game)
+            val toast = Toast.makeText(context, "TEST", Toast.LENGTH_SHORT)
+            toast.show()
+        }
+    }
 
     private fun populateDetails(){
 
@@ -111,11 +144,29 @@ class GameDetailsFragment : Fragment() {
         val context: Context = coverImage.context
         var id: Int = context.resources.getIdentifier(game.coverImage,"drawable",context.packageName)
         if (id == 0) id = context.resources.getIdentifier("steamicon","drawable", context.packageName)
-        coverImage.setImageResource(id)
+        Glide.with(context)
+            .load("https://"+game.coverImage)
+            .placeholder(R.drawable.steamicon)
+            .error(id)
+            .fallback(id)
+            .into(coverImage)
+
+
 
     }
     private fun showHomeLayout(){
         val bundle = bundleOf("game_title" to game.title)
         requireView().findNavController().navigate(R.id.action_gameDetailsItem_to_homeItem, bundle)
     }
+
+    private fun onSucces(games:List<Game>){
+        val toast = Toast.makeText(context, "Added game to favorites", Toast.LENGTH_SHORT)
+        toast.show()
+
+    }
+    private fun onError(){
+        val toast = Toast.makeText(context, "Error while adding game to favorites", Toast.LENGTH_SHORT)
+        toast.show()
+    }
+
 }

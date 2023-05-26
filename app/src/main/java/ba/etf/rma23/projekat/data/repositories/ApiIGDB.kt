@@ -7,7 +7,8 @@ import retrofit2.Response
 import retrofit2.http.*
 
 const val p: String = "abc"
- interface ApiIGDB {
+
+interface ApiIGDB {
     @Headers(
             "Client-ID: 8xedbwl0e7vku8o54ysapymuhk041h",
             "Authorization: Bearer eg3q4odwsas8h1dv52ozch590wea9t",
