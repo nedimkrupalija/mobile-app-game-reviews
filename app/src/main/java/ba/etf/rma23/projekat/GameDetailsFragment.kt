@@ -111,7 +111,7 @@ class GameDetailsFragment : Fragment() {
         }
 
         deleteButton.setOnClickListener {
-
+            deleteFromFavorites(game.id)
         }
 
 
@@ -119,6 +119,15 @@ class GameDetailsFragment : Fragment() {
     }
 
 
+    private fun deleteFromFavorites(id : Int){
+        val scope = CoroutineScope(Job() + Dispatchers.IO)
+        scope.launch {
+            AccountGamesRepository.removeGame(id)
+
+        }
+        val toast = Toast.makeText(context, "Igrica obrisana!", Toast.LENGTH_SHORT)
+        toast.show()
+    }
 
     private fun addGameToFavorites(game: Game){
         val scope = CoroutineScope(Job() + Dispatchers.Main)

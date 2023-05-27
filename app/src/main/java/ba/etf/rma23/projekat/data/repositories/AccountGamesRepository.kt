@@ -39,10 +39,9 @@ object AccountGamesRepository {
         return check
     }
      suspend fun removeGame(id: Int): Boolean{
-         val rez = removeGameHelp(id)
-         //Mozda
+         removeGameHelp(id)
          Account.favoriteGames = getSavedGames()
-        return rez!!.message!="null"
+        return true
     }
     suspend fun removeNonSafe():Boolean{
         for(game in Account.favoriteGames){
