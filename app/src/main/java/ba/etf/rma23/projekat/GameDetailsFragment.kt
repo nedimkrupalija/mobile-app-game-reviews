@@ -124,9 +124,19 @@ class GameDetailsFragment : Fragment() {
         val scope = CoroutineScope(Job() + Dispatchers.Main)
 
         scope.launch {
-            AccountGamesRepository.saveGame(game)
-            val toast = Toast.makeText(context, "TEST", Toast.LENGTH_SHORT)
-            toast.show()
+            if(!AccountGamesRepository.saveGame(game)) {
+                val toast = Toast.makeText(context, "Igrica već postoji u omiljenim", Toast.LENGTH_SHORT)
+                toast.show()
+
+            }
+            else {
+                val toast = Toast.makeText(
+                    context,
+                    "Uspješno ste dodali igru u omiljene",
+                    Toast.LENGTH_SHORT
+                )
+                toast.show()
+            }
         }
     }
 

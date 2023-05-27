@@ -50,6 +50,10 @@ class HomeActivity : AppCompatActivity() {
             //remove()
             /*val intent: Intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://rma23ws.onrender.com/login"))
             startActivity(intent)*/
+            //remove()
+           // print(search("abc").toString() + "\n")
+          //  search("abc")
+
         }
         else{
             val navHostFragment = supportFragmentManager.findFragmentById(R.id.detailsFragment) as NavHostFragment
@@ -64,8 +68,8 @@ class HomeActivity : AppCompatActivity() {
 
      fun search(query: String){
         scope.launch{
-            val result = GamesRepository.getGamesByName(query)
-
+            val result = GamesRepository.getGameById(5)
+            print("RESULT: " + result.toString() + "\n")
         }
     }
     fun login(){
@@ -76,7 +80,7 @@ class HomeActivity : AppCompatActivity() {
     }
     fun remove(){
         scope.launch {
-            val result = AccountGamesRepository.removeGame(5)
+            val result = AccountGamesRepository.removeGame(241)
         }
     }
 

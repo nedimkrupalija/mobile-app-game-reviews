@@ -24,7 +24,7 @@ interface ApiAccount {
      * Popraviti ne radi
      */
     @Headers("Content-Type: application/json")
-    @POST("account/{aid}/games")
+    @POST("account/{aid}/game")
     suspend fun saveGame(
         @Path("aid") acHash: String,
         @Body ab : GameBodyResponse

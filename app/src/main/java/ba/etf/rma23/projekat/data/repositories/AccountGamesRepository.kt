@@ -14,25 +14,29 @@ object AccountGamesRepository {
         return Account.acHash
     }
     suspend fun getSavedGames():List<Game>{
-        val responses = getUserGamesReponse()
+        val responses : MutableList<AccountGameResponse> = getUserGamesReponse() as MutableList<AccountGameResponse>
         val gameList: MutableList<Game> = mutableListOf()
-        if (responses != null) {
-            for(response in responses){
-                gameList.addAll(GamesRepository.getGamesByName(response.gameTitle)!!)
-                for(game in gameList){
-                    if(game.id!=response.igdbId) gameList.remove(game)
-                }
-            }
+        for(response in responses){
+            gameList.add(GamesRepository.getGameById(response.igdbId))
         }
     return gameList
     }
     // Promijeniti upitnik
-    suspend fun saveGame(game: Game)  {
-        return withContext(Dispatchers.IO){
-            AccountApiConfig.retrofit.saveGame("da694fdf-cd2e-4da6-b80d-e1a81e41bd25", GameBodyResponse(AccountGameResponse(game.id,game.title)))
-
-            return@withContext
+    suspend fun saveGame(game: Game): Boolean {
+       /* */
+        var check : Boolean = false
+         withContext(Dispatchers.IO){
+             val favoriteGames : MutableList<Game> = getSavedGames() as MutableList<Game>
+             print("SAVED GAMES: " + favoriteGames.toString() + "\n")
+             if(!favoriteGames.contains(game)) {
+                 AccountApiConfig.retrofit.saveGame(
+                     "da694fdf-cd2e-4da6-b80d-e1a81e41bd25",
+                     GameBodyResponse(AccountGameResponse(game.id, game.title))
+                 )
+                 check = true
+             }
         }
+        return check
     }
      suspend fun removeGame(id: Int): Boolean{
          val rez = removeGameHelp(id)
