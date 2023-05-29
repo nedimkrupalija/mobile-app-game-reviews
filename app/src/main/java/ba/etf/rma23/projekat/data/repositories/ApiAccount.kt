@@ -28,6 +28,6 @@ interface ApiAccount {
     suspend fun saveGame(
         @Path("aid") acHash: String,
         @Body ab : GameBodyResponse
-    ) : Response<Void>
+    ) : Response<AccountGameResponse>
 
 }

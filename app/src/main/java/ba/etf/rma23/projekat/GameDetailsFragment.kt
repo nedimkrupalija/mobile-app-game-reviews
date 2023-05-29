@@ -45,7 +45,7 @@ class GameDetailsFragment : Fragment() {
     private lateinit var reviews: RecyclerView
 
     private lateinit var reviewsAdapter: GameReviewAdapter
-
+    var searchText : String = ""
 
 
     override fun onCreateView(
@@ -75,11 +75,11 @@ class GameDetailsFragment : Fragment() {
         if (bundle != null) {
             val gameString = bundle.getString("game")
             game = Gson().fromJson(gameString, Game::class.java)
-            print(game.toString() + "\n")
+            searchText = bundle.getString("search_text").toString()
            populateDetails()
         }
         else{
-            game = getDetails("CS:GO")!!
+            getById(241)
             populateDetails()
         }
         
@@ -117,6 +117,14 @@ class GameDetailsFragment : Fragment() {
 
         return view
     }
+
+    private fun getById(id : Int){
+        val scope = CoroutineScope(Job() + Dispatchers.IO)
+        scope.launch {
+            game = GamesRepository.getGameById(id)
+        }
+    }
+
 
 
     private fun deleteFromFavorites(id : Int){
@@ -174,8 +182,10 @@ class GameDetailsFragment : Fragment() {
 
     }
     private fun showHomeLayout(){
-        val bundle = bundleOf("game_title" to game.title)
+        val gameString = Gson().toJson(game)
+        val bundle = bundleOf("search_text" to searchText, "game" to gameString)
         requireView().findNavController().navigate(R.id.action_gameDetailsItem_to_homeItem, bundle)
+
     }
 
     private fun onSucces(games:List<Game>){

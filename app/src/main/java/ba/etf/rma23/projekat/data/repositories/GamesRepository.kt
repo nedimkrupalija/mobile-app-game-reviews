@@ -26,7 +26,7 @@ sealed class Result<out R> {
 
 
 object GamesRepository {
-    suspend fun getGameById(id : Int) : Game{
+    suspend fun getGameById(id : Int) : Game {
         val serializedGame = getGameByIdHelp(id)
         return makeGameFromSerialized(serializedGame[0])
     }

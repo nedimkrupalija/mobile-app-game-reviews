@@ -10,12 +10,13 @@ import retrofit2.http.*
 
 const val p: String = "abc"
 public const val fieldsString : String = "id, age_ratings.category, age_ratings.rating, rating, cover.url, first_release_date, genres.name, involved_companies.company.name, involved_companies.publisher, involved_companies.developer, name, platforms.name, summary"
-
+const val ClientID = BuildConfig.ClientID
+const val Auth = BuildConfig.Auth
 interface ApiIGDB {
 
     @Headers(
-        "Client-ID: 8xedbwl0e7vku8o54ysapymuhk041h",
-        "Authorization: Bearer eg3q4odwsas8h1dv52ozch590wea9t",
+        "Client-ID: $ClientID",
+        "Authorization: $Auth",
         "Content-Type: text/plain")
     @POST("games")
     suspend fun getGameById(
@@ -23,8 +24,8 @@ interface ApiIGDB {
     ) : Response<List<GameSerialized>>
 
     @Headers(
-            "Client-ID: 8xedbwl0e7vku8o54ysapymuhk041h",
-            "Authorization: Bearer eg3q4odwsas8h1dv52ozch590wea9t",
+            "Client-ID: $ClientID",
+            "Authorization: $Auth",
             "Content-Type: application/json")
     @POST("games")
     suspend fun getGamesByName(

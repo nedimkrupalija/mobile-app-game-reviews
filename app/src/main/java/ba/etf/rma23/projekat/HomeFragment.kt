@@ -32,7 +32,7 @@ import kotlinx.coroutines.launch
 class HomeFragment : Fragment() {
     private lateinit var games: RecyclerView
     private lateinit var gameListAdapter: GameListAdapter
-    private var gamesList = getAll()
+    private var gamesList : List<Game> = listOf()
     private lateinit var homeButton: Button
     private lateinit var detailsButton: Button
     private lateinit var searchButton: Button
@@ -48,8 +48,8 @@ class HomeFragment : Fragment() {
         games.layoutManager = LinearLayoutManager(container!!.context, LinearLayoutManager.VERTICAL, false)
         gameListAdapter = GameListAdapter(arrayListOf()) {game -> showDetails(game)}
         games.adapter = gameListAdapter
-        gameListAdapter.updateGames(gamesList)
-
+        //gameListAdapter.updateGames(gamesList)
+        getGamesByName("")
         val orientation = resources.configuration.orientation
         searchButton = view.findViewById(R.id.search_button)
         searchText = view.findViewById(R.id.search_query_edittext)
@@ -61,12 +61,19 @@ class HomeFragment : Fragment() {
             val bottomNav: BottomNavigationView = requireActivity().findViewById(R.id.bottom_nav)
             val detailsItem: BottomNavigationItemView = bottomNav.findViewById(R.id.gameDetailsItem)
             bottomNav.findViewById<BottomNavigationItemView>(R.id.homeItem).isEnabled = false
+            val search: String? = bundle?.getString("search_text")
+            if(search != null){
 
+            getGamesByName(search)
+                searchText.text = search
+
+        }
             if (bundle?.getString("game") == null) {
                 detailsItem.isEnabled = false
             }
             detailsItem.setOnClickListener {
-                var game = getDetails(bundle!!.getString("game_title", ""))
+                val gameString = bundle?.getString("game")
+                game = Gson().fromJson(gameString, Game::class.java)
                 showDetails(game)
             }
         }
@@ -79,7 +86,7 @@ class HomeFragment : Fragment() {
     }
     private fun showDetails(game: Game?){
         val gameString = Gson().toJson(game)
-        val bundle = bundleOf("game" to gameString)
+        val bundle = bundleOf("game" to gameString, "search_text" to searchText.text.toString())
         if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
             requireView().findNavController()
                 .navigate(R.id.action_homeItem_to_gameDetailsItem, bundle)
@@ -93,7 +100,6 @@ class HomeFragment : Fragment() {
 
     private fun getGamesByName(query: String){
         val scope = CoroutineScope(Job() + Dispatchers.Main)
-
         scope.launch {
             val result = GamesRepository.getGamesByName(query)
             when(result){

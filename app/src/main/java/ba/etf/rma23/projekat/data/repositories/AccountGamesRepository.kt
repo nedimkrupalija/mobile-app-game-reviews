@@ -6,6 +6,22 @@ import kotlinx.coroutines.withContext
 import retrofit2.Response
 
 object AccountGamesRepository {
+
+    object  Account{
+        val student: String = ""
+        var acHash: String = "da694fdf-cd2e-4da6-b80d-e1a81e41bd25"
+        var age: Int = 0
+        var favoriteGames: List<Game> = listOf()
+        fun gamesWithString(query: String) : List<Game>{
+            val returnGames : MutableList<Game> = mutableListOf()
+            for(game in favoriteGames){
+                if(game.title.contains(query))
+                    returnGames.add(game)
+            }
+            return returnGames
+        }
+    }
+
     fun setHash(acHash: String): Boolean{
         Account.acHash = acHash
         return true
@@ -13,6 +29,11 @@ object AccountGamesRepository {
     fun getHash(): String{
         return Account.acHash
     }
+
+    fun getSavedGamesLocal() : List<Game>{
+        return Account.favoriteGames
+    }
+
     suspend fun getSavedGames():List<Game>{
         val responses : MutableList<AccountGameResponse> = getUserGamesReponse() as MutableList<AccountGameResponse>
         val gameList: MutableList<Game> = mutableListOf()
@@ -22,21 +43,14 @@ object AccountGamesRepository {
     return gameList
     }
     // Promijeniti upitnik
-    suspend fun saveGame(game: Game): Boolean {
-       /* */
-        var check : Boolean = false
-         withContext(Dispatchers.IO){
-             val favoriteGames : MutableList<Game> = getSavedGames() as MutableList<Game>
-             print("SAVED GAMES: " + favoriteGames.toString() + "\n")
-             if(!favoriteGames.contains(game)) {
-                 AccountApiConfig.retrofit.saveGame(
-                     "da694fdf-cd2e-4da6-b80d-e1a81e41bd25",
-                     GameBodyResponse(AccountGameResponse(game.id, game.title))
-                 )
-                 check = true
-             }
+    suspend fun saveGame(game: Game): Game? {
+      val gameHelp = saveHelp(game)
+        if (gameHelp != null) {
+            return GamesRepository.getGameById(gameHelp.igdbId)
         }
-        return check
+        else return null
+
+
     }
      suspend fun removeGame(id: Int): Boolean{
          removeGameHelp(id)
@@ -51,11 +65,9 @@ object AccountGamesRepository {
         Account.favoriteGames = getSavedGames()
         return true
     }
-     suspend fun getGamesContainingString(query:String):List<Game>{
-        val response = getUserGamesReponse()
-        return GamesRepository.getGamesByName(query)!!
+      fun getGamesContainingString(query:String):List<Game>{
          //Mozda implementacija
-        //return Account.gamesWithString(query)
+        return Account.gamesWithString(query)
     }
     fun setAge(age:Int):Boolean{
         if(age in 3..100){
@@ -74,7 +86,7 @@ object AccountGamesRepository {
 
     private suspend fun getUserGamesReponse() : List<AccountGameResponse>?{
         return withContext(Dispatchers.IO){
-            val response = AccountApiConfig.retrofit.getUserGames("da694fdf-cd2e-4da6-b80d-e1a81e41bd25")
+            val response = AccountApiConfig.retrofit.getUserGames(Account.acHash)
             val responseBody = response.body()
 
             return@withContext responseBody
@@ -83,7 +95,7 @@ object AccountGamesRepository {
 
     private suspend fun removeGameHelp(id: Int): DeletedGameResponse? {
         return withContext(Dispatchers.IO){
-            val response = AccountApiConfig.retrofit.removeGame("da694fdf-cd2e-4da6-b80d-e1a81e41bd25",id)
+            val response = AccountApiConfig.retrofit.removeGame(Account.acHash,id)
             val responseBody = response.body()
             return@withContext responseBody
         }
@@ -100,5 +112,22 @@ object AccountGamesRepository {
         }
         return true
     }
+
+    private suspend fun saveHelp(game : Game) : AccountGameResponse?{
+        return withContext(Dispatchers.IO){
+            val favoriteGames : MutableList<Game> = getSavedGames() as MutableList<Game>
+            print("SAVED GAMES: " + favoriteGames.toString() + "\n")
+            var responseBody = AccountGameResponse(0,"0")
+            if(!favoriteGames.contains(game)) {
+               responseBody = AccountApiConfig.retrofit.saveGame(
+                   Account.acHash,
+                   GameBodyResponse(AccountGameResponse(game.id, game.title))
+               ).body()!!
+
+            }
+        return@withContext responseBody
+        }
+    }
+
 
 }
