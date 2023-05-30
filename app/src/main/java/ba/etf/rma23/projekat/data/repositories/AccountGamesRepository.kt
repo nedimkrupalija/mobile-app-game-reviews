@@ -1,5 +1,6 @@
 package ba.etf.rma23.projekat.data.repositories
 
+import androidx.compose.ui.text.toLowerCase
 import ba.etf.rma23.projekat.Game
 import ba.etf.rma23.projekat.data.repositories.AccountGamesRepository.Account.favoriteGames
 import ba.etf.rma23.projekat.data.repositories.responses.AccountGameResponse
@@ -13,12 +14,12 @@ object AccountGamesRepository {
     object  Account{
         val student: String = ""
         var acHash: String = "da694fdf-cd2e-4da6-b80d-e1a81e41bd25"
-        var age: Int = 999
+        var age: Int = 99
         var favoriteGames: MutableList<Game> = mutableListOf()
         fun gamesWithString(query: String) : List<Game>{
             val returnGames : MutableList<Game> = mutableListOf()
             for(game in favoriteGames){
-                if(game.title.contains(query))
+                if(game.title.lowercase().contains(query.lowercase()))
                     returnGames.add(game)
             }
             return returnGames
@@ -57,18 +58,18 @@ object AccountGamesRepository {
 
     suspend fun getSavedGames():List<Game>{
         val responses : MutableList<AccountGameResponse> = getUserGamesReponse() as MutableList<AccountGameResponse>
-        val gameList: MutableList<Game> = mutableListOf()
+        favoriteGames = mutableListOf()
         for(response in responses){
-            gameList.add(GamesRepository.getGameById(response.igdbId))
+            favoriteGames.add(GamesRepository.getGameById(response.igdbId))
         }
-    return gameList
+    return favoriteGames
     }
 
     suspend fun saveGame(game: Game): Game? {
         val gameHelp = saveHelp(game)
             return if (gameHelp != null) {
                 val game = GamesRepository.getGameById(gameHelp.igdbId)
-                Account.favoriteGames.add(game)
+                favoriteGames.add(game)
                 game
         } else null
 
@@ -82,14 +83,28 @@ object AccountGamesRepository {
     }
     suspend fun removeNonSafe():Boolean{
         for(game in Account.favoriteGames){
-            if(!checkGameRating(game)) removeGame(game)
+            if(!checkGameRating(game)) {
+                removeGame(game)
+
+            }
         }
+        favoriteGames = getSavedGames() as MutableList<Game>
         //Update games
-        Account.favoriteGames = getSavedGames() as MutableList<Game>
         return true
     }
-      fun getGamesContainingString(query:String):List<Game>{
-         //Mozda implementacija
+    fun removeNonSafeLocal() : List<Game>{
+        val temp = favoriteGames
+        print("FAVORITI: " + favoriteGames.toString() + "\n")
+        temp.removeAll{!checkGameRating(it) }
+        return temp
+    }
+
+      suspend fun getGamesContainingString(query:String):List<Game>{
+         favoriteGames = getSavedGames() as MutableList<Game>
+        return Account.gamesWithString(query)
+    }
+
+    fun getGamesContainingStringLocal(query: String) : List<Game>{
         return Account.gamesWithString(query)
     }
     fun setAge(age:Int):Boolean{
@@ -127,9 +142,10 @@ object AccountGamesRepository {
             "M" -> return Account.age >= 17
             "AO" -> return Account.age >= 18
             "Three" -> return Account.age >= 3
-            "Seven" -> return Account.age >=7
-            "Sixteen" -> return Account.age >= 4
+            "Seven" -> return Account.age >= 7
+            "Sixteen" -> return Account.age >= 16
             "Eighteen" -> return Account.age >= 18
+
         }
         return true
     }

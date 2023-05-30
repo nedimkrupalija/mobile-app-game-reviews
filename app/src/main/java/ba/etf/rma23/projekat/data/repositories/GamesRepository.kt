@@ -45,21 +45,12 @@ object GamesRepository {
 
 
       suspend fun getGamesSafe(name : String):List<Game>{
-        gamesRepositoryList = getGamesByName(name) as MutableList<Game>
-              gamesRepositoryList.removeAll{!AccountGamesRepository.checkGameRating(it)}
-          return gamesRepositoryList
+          gamesRepositoryList = getGamesByName(name) as MutableList<Game>
+          gamesRepositoryList.removeAll{!AccountGamesRepository.checkGameRating(it)}
+            return gamesRepositoryList
     }
 
-    private suspend fun getGamesSafeHelp(name : String){
-        withContext(Dispatchers.IO){
-            gamesRepositoryList = getGamesByName(name) as MutableList<Game>
-            for(game in gamesRepositoryList){
-                if(!AccountGamesRepository.checkGameRating(game)){
-                    gamesRepositoryList.remove(game)
-                }
-            }
-        }
-    }
+
 
     fun sortGames() : List<Game>{
         AccountGamesRepository.Account.favoriteGames.sortBy { it.title }
