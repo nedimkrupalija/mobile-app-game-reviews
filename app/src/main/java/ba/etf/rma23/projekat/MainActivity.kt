@@ -33,12 +33,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class HomeActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     private val scope = CoroutineScope(Job() + Dispatchers.Main)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+        setLocalGames()
         if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
             val navHostFragment =
                 supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
@@ -64,25 +65,11 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
-
-
-     fun search(query: String){
+     fun setLocalGames(){
         scope.launch{
-            val result = GamesRepository.getGameById(5)
-            print("RESULT: " + result.toString() + "\n")
+            AccountGamesRepository.Account.favoriteGames = AccountGamesRepository.getSavedGames() as MutableList<Game>
+            print("MAIN OMILJENE: " + AccountGamesRepository.Account.favoriteGames.toString() + "\n")
         }
     }
-    fun login(){
-        scope.launch {
-            val result = AccountGamesRepository.getSavedGames()
-
-        }
-    }
-    fun remove(){
-        scope.launch {
-            val result = AccountGamesRepository.removeGame(241)
-        }
-    }
-
 
 }

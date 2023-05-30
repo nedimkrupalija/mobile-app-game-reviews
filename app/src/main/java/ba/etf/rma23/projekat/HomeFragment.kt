@@ -82,6 +82,7 @@ class HomeFragment : Fragment() {
         }
 
 
+
         return view
     }
     private fun showDetails(game: Game?){

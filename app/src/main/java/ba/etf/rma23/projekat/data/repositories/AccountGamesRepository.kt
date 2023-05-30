@@ -1,6 +1,7 @@
 package ba.etf.rma23.projekat.data.repositories
 
 import ba.etf.rma23.projekat.Game
+import ba.etf.rma23.projekat.data.repositories.AccountGamesRepository.Account.favoriteGames
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
@@ -11,7 +12,7 @@ object AccountGamesRepository {
         val student: String = ""
         var acHash: String = "da694fdf-cd2e-4da6-b80d-e1a81e41bd25"
         var age: Int = 0
-        var favoriteGames: List<Game> = listOf()
+        var favoriteGames: MutableList<Game> = mutableListOf()
         fun gamesWithString(query: String) : List<Game>{
             val returnGames : MutableList<Game> = mutableListOf()
             for(game in favoriteGames){
@@ -20,6 +21,24 @@ object AccountGamesRepository {
             }
             return returnGames
         }
+
+        fun isInLocalGames(id : Int) : Boolean{
+            for(game in favoriteGames){
+                if(game.id == id){
+                    return true
+                }
+            }
+            return false
+        }
+
+        fun getLocalById(id : Int) : Game?{
+            for(game in favoriteGames){
+                if(game.id == id)
+                    return game
+            }
+            return null
+        }
+
     }
 
     fun setHash(acHash: String): Boolean{
@@ -42,19 +61,21 @@ object AccountGamesRepository {
         }
     return gameList
     }
-    // Promijeniti upitnik
+
     suspend fun saveGame(game: Game): Game? {
       val gameHelp = saveHelp(game)
-        if (gameHelp != null) {
-            return GamesRepository.getGameById(gameHelp.igdbId)
-        }
-        else return null
+            return if (gameHelp != null) {
+                val game = GamesRepository.getGameById(gameHelp.igdbId)
+                Account.favoriteGames.add(game)
+                game
+        } else null
 
 
     }
      suspend fun removeGame(id: Int): Boolean{
+         favoriteGames.remove(Account.getLocalById(id))
          removeGameHelp(id)
-         Account.favoriteGames = getSavedGames()
+
         return true
     }
     suspend fun removeNonSafe():Boolean{
@@ -62,7 +83,7 @@ object AccountGamesRepository {
             if(!checkGameRating(game)) removeGame(game.id)
         }
         //Update games
-        Account.favoriteGames = getSavedGames()
+        Account.favoriteGames = getSavedGames() as MutableList<Game>
         return true
     }
       fun getGamesContainingString(query:String):List<Game>{
@@ -115,16 +136,15 @@ object AccountGamesRepository {
 
     private suspend fun saveHelp(game : Game) : AccountGameResponse?{
         return withContext(Dispatchers.IO){
-            val favoriteGames : MutableList<Game> = getSavedGames() as MutableList<Game>
+            //val favoriteGames : MutableList<Game> = getSavedGames() as MutableList<Game>
             print("SAVED GAMES: " + favoriteGames.toString() + "\n")
-            var responseBody = AccountGameResponse(0,"0")
-            if(!favoriteGames.contains(game)) {
-               responseBody = AccountApiConfig.retrofit.saveGame(
+            //var responseBody = AccountGameResponse(0,"0")
+
+               val responseBody = AccountApiConfig.retrofit.saveGame(
                    Account.acHash,
                    GameBodyResponse(AccountGameResponse(game.id, game.title))
                ).body()!!
 
-            }
         return@withContext responseBody
         }
     }

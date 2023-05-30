@@ -139,7 +139,11 @@ object GamesRepository {
             rating = temp
         }
         else rating = 0.0
-        releaseDate = getDateFromEpoch(serializedGame.releaseDate)
+        releaseDate = if(serializedGame.releaseDate!=0L) {
+            getDateFromEpoch(serializedGame.releaseDate)
+        } else{
+            "Unknown release date"
+        }
         coverImage = serializedGame.cover?.url.toString()
         if(serializedGame.ESRBList!=null) {
             for(esrb in serializedGame.ESRBList){
@@ -165,6 +169,12 @@ object GamesRepository {
             }
             if(developer.isNotEmpty() && developer.last() == ' '){
                 developer = developer.dropLast(2)
+            }
+            if(developer == "") {
+                developer = "Unknown developer"
+            }
+            if(publisher==""){
+                publisher = "Unknown publisher"
             }
         }
         if(serializedGame.genreList != null){

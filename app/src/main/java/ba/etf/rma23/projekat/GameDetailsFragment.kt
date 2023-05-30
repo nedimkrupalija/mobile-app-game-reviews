@@ -46,7 +46,7 @@ class GameDetailsFragment : Fragment() {
 
     private lateinit var reviewsAdapter: GameReviewAdapter
     var searchText : String = ""
-
+    var isPresentLocal = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -129,32 +129,47 @@ class GameDetailsFragment : Fragment() {
 
     private fun deleteFromFavorites(id : Int){
         val scope = CoroutineScope(Job() + Dispatchers.IO)
+        val provjera = AccountGamesRepository.Account.isInLocalGames(id)
         scope.launch {
-            AccountGamesRepository.removeGame(id)
-
+            if(AccountGamesRepository.Account.isInLocalGames(id)){
+                AccountGamesRepository.removeGame(id)
+            }
         }
-        val toast = Toast.makeText(context, "Igrica obrisana!", Toast.LENGTH_SHORT)
-        toast.show()
+        if(provjera){
+            val toast = Toast.makeText(context, "Game succesfully deleted!", Toast.LENGTH_SHORT)
+            toast.show()
+        }
+        else{
+            val toast = Toast.makeText(context, "Game is not in favorites!", Toast.LENGTH_SHORT)
+            toast.show()
+        }
+
+
     }
 
     private fun addGameToFavorites(game: Game){
-        val scope = CoroutineScope(Job() + Dispatchers.Main)
-
+        val scope = CoroutineScope(Job() + Dispatchers.IO)
+        var provjera : Boolean = AccountGamesRepository.Account.isInLocalGames(game.id)
         scope.launch {
-            if(!AccountGamesRepository.saveGame(game)) {
-                val toast = Toast.makeText(context, "Igrica već postoji u omiljenim", Toast.LENGTH_SHORT)
-                toast.show()
-
+            if(provjera){
             }
             else {
-                val toast = Toast.makeText(
-                    context,
-                    "Uspješno ste dodali igru u omiljene",
-                    Toast.LENGTH_SHORT
-                )
-                toast.show()
+                AccountGamesRepository.saveGame(game)
             }
         }
+        if(provjera){
+            val toast = Toast.makeText(context, "Igrica već postoji u omiljenim", Toast.LENGTH_SHORT)
+            toast.show()
+        }
+        else{
+            val toast = Toast.makeText(
+                context,
+                "Game succesfully added to favorites!",
+                Toast.LENGTH_SHORT
+            )
+            toast.show()
+        }
+
     }
 
     private fun populateDetails(){

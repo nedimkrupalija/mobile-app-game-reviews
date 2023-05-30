@@ -49,7 +49,7 @@ class OwnEspressoTests {
         }
     }
     @get:Rule
-    public val rule: ActivityScenarioRule<HomeActivity> = ActivityScenarioRule(HomeActivity::class.java)
+    public val rule: ActivityScenarioRule<MainActivity> = ActivityScenarioRule(MainActivity::class.java)
 
     /**
      * Ovim testom se testira da li aplikacija ispravno funkcionise u portrait modu
