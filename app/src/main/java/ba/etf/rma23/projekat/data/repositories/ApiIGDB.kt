@@ -1,11 +1,8 @@
 package ba.etf.rma23.projekat.data.repositories
 
 import ba.etf.rma23.projekat.BuildConfig
-import ba.etf.rma23.projekat.Game
-import org.junit.runners.Parameterized.Parameter
-import retrofit2.Call
+import ba.etf.rma23.projekat.data.repositories.responses.GameSerialized
 import retrofit2.Response
-import retrofit2.Retrofit
 import retrofit2.http.*
 
 const val p: String = "abc"

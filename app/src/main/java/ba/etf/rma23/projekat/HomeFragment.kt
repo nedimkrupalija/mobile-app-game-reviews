@@ -21,6 +21,7 @@ import ba.etf.rma23.projekat.GameData.Companion.getAll
 import ba.etf.rma23.projekat.GameData.Companion.getDetails
 import ba.etf.rma23.projekat.R
 import ba.etf.rma23.projekat.data.repositories.GamesRepository
+import ba.etf.rma23.projekat.data.repositories.GamesRepository.sortGames
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.Gson
@@ -37,6 +38,7 @@ class HomeFragment : Fragment() {
     private lateinit var detailsButton: Button
     private lateinit var searchButton: Button
     private lateinit var searchText: TextView
+    private lateinit var sortButton: Button
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,6 +55,8 @@ class HomeFragment : Fragment() {
         val orientation = resources.configuration.orientation
         searchButton = view.findViewById(R.id.search_button)
         searchText = view.findViewById(R.id.search_query_edittext)
+
+        sortButton = view.findViewById(R.id.sort_button)
 
         val bundle: Bundle? = arguments
         var game: Game?
@@ -81,10 +85,21 @@ class HomeFragment : Fragment() {
             getGamesByName(searchText.text.toString())
         }
 
+        sortButton.setOnClickListener {
+            sortListedGames()
+        }
 
 
         return view
     }
+
+    private fun sortListedGames(){
+        gamesList = sortGames()
+        gameListAdapter.updateGames(gamesList)
+        val toast = Toast.makeText(context, "Games sorted!", Toast.LENGTH_SHORT)
+        toast.show()
+    }
+
     private fun showDetails(game: Game?){
         val gameString = Gson().toJson(game)
         val bundle = bundleOf("game" to gameString, "search_text" to searchText.text.toString())

@@ -2,16 +2,18 @@ package ba.etf.rma23.projekat.data.repositories
 
 import ba.etf.rma23.projekat.Game
 import ba.etf.rma23.projekat.data.repositories.AccountGamesRepository.Account.favoriteGames
+import ba.etf.rma23.projekat.data.repositories.responses.AccountGameResponse
+import ba.etf.rma23.projekat.data.repositories.responses.DeletedGameResponse
+import ba.etf.rma23.projekat.data.repositories.responses.GameBodyResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import retrofit2.Response
 
 object AccountGamesRepository {
 
     object  Account{
         val student: String = ""
         var acHash: String = "da694fdf-cd2e-4da6-b80d-e1a81e41bd25"
-        var age: Int = 0
+        var age: Int = 999
         var favoriteGames: MutableList<Game> = mutableListOf()
         fun gamesWithString(query: String) : List<Game>{
             val returnGames : MutableList<Game> = mutableListOf()
@@ -63,7 +65,7 @@ object AccountGamesRepository {
     }
 
     suspend fun saveGame(game: Game): Game? {
-      val gameHelp = saveHelp(game)
+        val gameHelp = saveHelp(game)
             return if (gameHelp != null) {
                 val game = GamesRepository.getGameById(gameHelp.igdbId)
                 Account.favoriteGames.add(game)
@@ -72,15 +74,15 @@ object AccountGamesRepository {
 
 
     }
-     suspend fun removeGame(id: Int): Boolean{
-         favoriteGames.remove(Account.getLocalById(id))
-         removeGameHelp(id)
+     suspend fun removeGame(game: Game): Boolean{
+         favoriteGames.remove(Account.getLocalById(game.id))
+         removeGameHelp(game.id)
 
         return true
     }
     suspend fun removeNonSafe():Boolean{
         for(game in Account.favoriteGames){
-            if(!checkGameRating(game)) removeGame(game.id)
+            if(!checkGameRating(game)) removeGame(game)
         }
         //Update games
         Account.favoriteGames = getSavedGames() as MutableList<Game>
@@ -97,13 +99,7 @@ object AccountGamesRepository {
         }
         return false
     }
-    suspend fun login() : String? {
-        return withContext(Dispatchers.IO){
-            val response = AccountApiConfig.retrofit.login()
-            val responseBody = response.body()
-            return@withContext responseBody
-        }
-    }
+
 
     private suspend fun getUserGamesReponse() : List<AccountGameResponse>?{
         return withContext(Dispatchers.IO){
@@ -130,6 +126,10 @@ object AccountGamesRepository {
             "T" -> return Account.age >= 13
             "M" -> return Account.age >= 17
             "AO" -> return Account.age >= 18
+            "Three" -> return Account.age >= 3
+            "Seven" -> return Account.age >=7
+            "Sixteen" -> return Account.age >= 4
+            "Eighteen" -> return Account.age >= 18
         }
         return true
     }

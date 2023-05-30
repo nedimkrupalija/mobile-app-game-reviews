@@ -40,13 +40,14 @@ class GameDetailsFragment : Fragment() {
     private lateinit var description: TextView
 
     private lateinit var addButton: Button
-    private lateinit var deleteButton: Button
+
 
     private lateinit var reviews: RecyclerView
 
     private lateinit var reviewsAdapter: GameReviewAdapter
     var searchText : String = ""
-    var isPresentLocal = false
+    private var isPresentLocal : Boolean = false
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,7 +66,8 @@ class GameDetailsFragment : Fragment() {
         description = view.findViewById(R.id.description_textview)
 
         addButton = view.findViewById(R.id.insert_game_button)
-        deleteButton = view.findViewById(R.id.delete_game_button)
+
+
 
         reviews = view.findViewById(R.id.impression_recyclerView)
 
@@ -105,14 +107,19 @@ class GameDetailsFragment : Fragment() {
                 showHomeLayout()
             }
         }
+        isPresentLocal = AccountGamesRepository.Account.isInLocalGames(game.id)
+        if(isPresentLocal){
+            addButton.text = "Remove from favorites"
+        }
+        else{
+            addButton.text = "Add to favorites"
+        }
 
         addButton.setOnClickListener {
             addGameToFavorites(game)
         }
 
-        deleteButton.setOnClickListener {
-            deleteFromFavorites(game.id)
-        }
+
 
 
         return view
@@ -127,12 +134,13 @@ class GameDetailsFragment : Fragment() {
 
 
 
-    private fun deleteFromFavorites(id : Int){
+   /* private fun deleteFromFavorites(id : Int){
         val scope = CoroutineScope(Job() + Dispatchers.IO)
         val provjera = AccountGamesRepository.Account.isInLocalGames(id)
         scope.launch {
             if(AccountGamesRepository.Account.isInLocalGames(id)){
-                AccountGamesRepository.removeGame(id)
+
+
             }
         }
         if(provjera){
@@ -145,21 +153,23 @@ class GameDetailsFragment : Fragment() {
         }
 
 
-    }
+    */
 
     private fun addGameToFavorites(game: Game){
         val scope = CoroutineScope(Job() + Dispatchers.IO)
-        var provjera : Boolean = AccountGamesRepository.Account.isInLocalGames(game.id)
+        isPresentLocal = AccountGamesRepository.Account.isInLocalGames(game.id)
         scope.launch {
-            if(provjera){
-            }
-            else {
+            if(!isPresentLocal){
                 AccountGamesRepository.saveGame(game)
             }
+            else {
+                AccountGamesRepository.removeGame(game)
+            }
         }
-        if(provjera){
-            val toast = Toast.makeText(context, "Igrica već postoji u omiljenim", Toast.LENGTH_SHORT)
+        if(isPresentLocal){
+            val toast = Toast.makeText(context, "Game succesfully deleted from favorites!", Toast.LENGTH_SHORT)
             toast.show()
+            addButton.text = "Add to favorites"
         }
         else{
             val toast = Toast.makeText(
@@ -168,6 +178,7 @@ class GameDetailsFragment : Fragment() {
                 Toast.LENGTH_SHORT
             )
             toast.show()
+            addButton.text = "Remove from favorites"
         }
 
     }

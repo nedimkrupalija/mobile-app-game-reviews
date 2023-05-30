@@ -1,8 +1,10 @@
 package ba.etf.rma23.projekat.data.repositories
 
+import ba.etf.rma23.projekat.data.repositories.responses.AccountGameResponse
+import ba.etf.rma23.projekat.data.repositories.responses.DeletedGameResponse
+import ba.etf.rma23.projekat.data.repositories.responses.GameBodyResponse
 import retrofit2.Response
 import retrofit2.http.*
-import java.util.Objects
 
 interface ApiAccount {
     @Headers("Content-Type: application/json")
@@ -16,7 +18,7 @@ interface ApiAccount {
     @Headers("Content-Type: application/json")
     @DELETE("account/{aid}/game/{gid}")
     suspend fun removeGame(
-        @Path("aid") acHash: String ,
+        @Path("aid") acHash: String,
         @Path("gid") gameId: Int
     ) : Response<DeletedGameResponse>
 

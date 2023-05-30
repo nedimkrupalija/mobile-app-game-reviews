@@ -2,6 +2,8 @@ package ba.etf.rma23.projekat.data.repositories
 
 import ba.etf.rma23.projekat.Game
 import ba.etf.rma23.projekat.UserImpression
+import ba.etf.rma23.projekat.data.repositories.responses.AgeRatingEnum
+import ba.etf.rma23.projekat.data.repositories.responses.GameSerialized
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
@@ -15,9 +17,6 @@ import java.lang.reflect.Type
 
 import java.math.RoundingMode
 import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.math.round
-import kotlin.time.Duration.Companion.days
 
 sealed class Result<out R> {
     data class Success<out T>(val data: T) : Result<T>()
@@ -26,35 +25,59 @@ sealed class Result<out R> {
 
 
 object GamesRepository {
+    var gamesRepositoryList : MutableList<Game> = mutableListOf()
     suspend fun getGameById(id : Int) : Game {
         val serializedGame = getGameByIdHelp(id)
         return makeGameFromSerialized(serializedGame[0])
     }
 
-    suspend fun getGamesByName(name : String) : List<Game>?{
+    suspend fun getGamesByName(name : String) : List<Game>{
         val serializedList = getGamesByNameHelp(name)
-        val gameList : MutableList<Game> = mutableListOf()
-
+        gamesRepositoryList = mutableListOf()
         if (serializedList != null) {
             for(serializedGame in serializedList){
-                gameList.add(makeGameFromSerialized((serializedGame)))
+                gamesRepositoryList.add(makeGameFromSerialized((serializedGame)))
             }
         }
-        return gameList
+
+        return gamesRepositoryList
     }
 
 
-    suspend fun getGamesSafe(name : String):List<Game>{
-        val games : MutableList<Game> = getGamesByName(name) as MutableList<Game>
-        for(game in games){
-            if(!AccountGamesRepository.checkGameRating(game)){
-                games.remove(game)
+      suspend fun getGamesSafe(name : String):List<Game>{
+        gamesRepositoryList = getGamesByName(name) as MutableList<Game>
+              gamesRepositoryList.removeAll{!AccountGamesRepository.checkGameRating(it)}
+          return gamesRepositoryList
+    }
+
+    private suspend fun getGamesSafeHelp(name : String){
+        withContext(Dispatchers.IO){
+            gamesRepositoryList = getGamesByName(name) as MutableList<Game>
+            for(game in gamesRepositoryList){
+                if(!AccountGamesRepository.checkGameRating(game)){
+                    gamesRepositoryList.remove(game)
+                }
             }
         }
-        return games
     }
+
     fun sortGames() : List<Game>{
-        return listOf()
+        AccountGamesRepository.Account.favoriteGames.sortBy { it.title }
+        print("NESORTIRANO: " + gamesRepositoryList.toString() + "\n")
+        /*for(game in AccountGamesRepository.Account.favoriteGames){
+            gamesRepositoryList.add(0, game)
+        }*/
+        val intersectedGames = AccountGamesRepository.Account.favoriteGames.intersect(
+            gamesRepositoryList.toSet()
+        )
+        print("INTERSECT: " + intersectedGames.toString() + "\n")
+        //gamesRepositoryList = gamesRepositoryList.distinctBy { it.id } as MutableList<Game>
+        gamesRepositoryList.sortBy { it.title }
+        for(game in intersectedGames){
+            gamesRepositoryList.add(0,game)
+        }
+        gamesRepositoryList = gamesRepositoryList.distinct() as MutableList<Game>
+        return gamesRepositoryList
     }
 
     //Staviti upitnik
@@ -73,13 +96,7 @@ object GamesRepository {
     }
 
     private suspend fun getGameByIdHelp(id : Int) : List<GameSerialized> {
-        /*return withContext(Dispatchers.IO){
-            val response = IGDBApiConfig.retrofit.getGameById("fields id,age_ratings.category;")
-            val responseBody = response.body()
-            print("RESPONSE BODY: " + responseBody.toString() + "\n " )
-            return@withContext responseBody!!
-        }*
-         */
+
          return withContext(Dispatchers.IO) {
              val client = OkHttpClient()
              val mediaType = "text/plain".toMediaType()
@@ -103,7 +120,7 @@ object GamesRepository {
          }
     }
 
-    inline fun <reified T> parseArray(json: String, typeToken: Type): T {
+    private inline fun <reified T> parseArray(json: String, typeToken: Type): T {
         val gson = GsonBuilder().create()
         return gson.fromJson<T>(json, typeToken)
     }
@@ -132,7 +149,7 @@ object GamesRepository {
                 if(i!=serializedGame.platformList.size-1) platform = "$platform, "
             }
         }
-        //platform = serializedGame.platformList.toString()
+
         if(serializedGame.ratingValue!=null){
             var temp : Double= serializedGame.ratingValue/10.0
             temp = temp.toBigDecimal().setScale(1, RoundingMode.UP).toDouble()
@@ -148,6 +165,10 @@ object GamesRepository {
         if(serializedGame.ESRBList!=null) {
             for(esrb in serializedGame.ESRBList){
                 if(esrb.category==1){
+                    esrbRating = ""
+                    esrbRating += AgeRatingEnum.enumFromInt(esrb.rating)
+                }
+                else if(esrb.category==2){
                     esrbRating = ""
                     esrbRating += AgeRatingEnum.enumFromInt(esrb.rating)
                 }
