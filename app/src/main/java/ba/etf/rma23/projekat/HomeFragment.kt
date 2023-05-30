@@ -76,6 +76,7 @@ class HomeFragment : Fragment() {
             val bottomNav: BottomNavigationView = requireActivity().findViewById(R.id.bottom_nav)
             val detailsItem: BottomNavigationItemView = bottomNav.findViewById(R.id.gameDetailsItem)
             bottomNav.findViewById<BottomNavigationItemView>(R.id.homeItem).isEnabled = false
+
             val search: String? = bundle?.getString("search_text")
             if(search != null){
 

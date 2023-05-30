@@ -72,6 +72,7 @@ class GameDetailsFragment : Fragment() {
         reviews = view.findViewById(R.id.impression_recyclerView)
 
         val orientation = resources.configuration.orientation
+        game = Game(0, "", "" , "", 5.0, "", "", "", "", "", "", listOf())
 
         val bundle: Bundle? = arguments
         if (bundle != null) {
@@ -124,6 +125,8 @@ class GameDetailsFragment : Fragment() {
 
         return view
     }
+
+
 
     private fun getById(id : Int){
         val scope = CoroutineScope(Job() + Dispatchers.IO)
