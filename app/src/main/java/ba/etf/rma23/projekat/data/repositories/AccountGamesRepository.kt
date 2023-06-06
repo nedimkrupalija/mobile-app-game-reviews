@@ -75,16 +75,16 @@ object AccountGamesRepository {
 
 
     }
-     suspend fun removeGame(game: Game): Boolean{
-         favoriteGames.remove(Account.getLocalById(game.id))
-         removeGameHelp(game.id)
+     suspend fun removeGame(id: Int): Boolean{
+         favoriteGames.remove(Account.getLocalById(id))
+         removeGameHelp(id)
 
         return true
     }
     suspend fun removeNonSafe():Boolean{
         for(game in Account.favoriteGames){
             if(!checkGameRating(game)) {
-                removeGame(game)
+                removeGame(game.id)
 
             }
         }
@@ -94,7 +94,7 @@ object AccountGamesRepository {
     }
     fun removeNonSafeLocal() : List<Game>{
         val temp = favoriteGames
-        print("FAVORITI: " + favoriteGames.toString() + "\n")
+
         temp.removeAll{!checkGameRating(it) }
         return temp
     }
@@ -152,9 +152,6 @@ object AccountGamesRepository {
 
     private suspend fun saveHelp(game : Game) : AccountGameResponse?{
         return withContext(Dispatchers.IO){
-            //val favoriteGames : MutableList<Game> = getSavedGames() as MutableList<Game>
-            print("SAVED GAMES: " + favoriteGames.toString() + "\n")
-            //var responseBody = AccountGameResponse(0,"0")
 
                val responseBody = AccountApiConfig.retrofit.saveGame(
                    Account.acHash,

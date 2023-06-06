@@ -137,26 +137,7 @@ class GameDetailsFragment : Fragment() {
 
 
 
-   /* private fun deleteFromFavorites(id : Int){
-        val scope = CoroutineScope(Job() + Dispatchers.IO)
-        val provjera = AccountGamesRepository.Account.isInLocalGames(id)
-        scope.launch {
-            if(AccountGamesRepository.Account.isInLocalGames(id)){
 
-
-            }
-        }
-        if(provjera){
-            val toast = Toast.makeText(context, "Game succesfully deleted!", Toast.LENGTH_SHORT)
-            toast.show()
-        }
-        else{
-            val toast = Toast.makeText(context, "Game is not in favorites!", Toast.LENGTH_SHORT)
-            toast.show()
-        }
-
-
-    */
 
     private fun addGameToFavorites(game: Game){
         val scope = CoroutineScope(Job() + Dispatchers.IO)
@@ -166,7 +147,7 @@ class GameDetailsFragment : Fragment() {
                 AccountGamesRepository.saveGame(game)
             }
             else {
-                AccountGamesRepository.removeGame(game)
+                AccountGamesRepository.removeGame(game.id)
             }
         }
         if(isPresentLocal){
@@ -206,6 +187,7 @@ class GameDetailsFragment : Fragment() {
             .error(id)
             .fallback(id)
             .into(coverImage)
+
 
 
 

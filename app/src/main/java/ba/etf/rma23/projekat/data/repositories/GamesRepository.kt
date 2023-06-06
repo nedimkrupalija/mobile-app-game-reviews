@@ -54,15 +54,11 @@ object GamesRepository {
 
     fun sortGames() : List<Game>{
         AccountGamesRepository.Account.favoriteGames.sortBy { it.title }
-        print("NESORTIRANO: " + gamesRepositoryList.toString() + "\n")
-        /*for(game in AccountGamesRepository.Account.favoriteGames){
-            gamesRepositoryList.add(0, game)
-        }*/
+
         val intersectedGames = AccountGamesRepository.Account.favoriteGames.intersect(
             gamesRepositoryList.toSet()
         )
-        print("INTERSECT: " + intersectedGames.toString() + "\n")
-        //gamesRepositoryList = gamesRepositoryList.distinctBy { it.id } as MutableList<Game>
+
         gamesRepositoryList.sortBy { it.title }
         for(game in intersectedGames){
             gamesRepositoryList.add(0,game)

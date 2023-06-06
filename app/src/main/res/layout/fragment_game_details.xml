@@ -5,101 +5,110 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/cover_imageview"
-            android:layout_width="294dp"
-            android:layout_height="115dp"
-            android:layout_gravity="center"
-            android:layout_margin="5dp"
-            app:srcCompat="@drawable/csgo_cover"
-            tools:srcCompat="@drawable/csgo_cover" />
-
-        <TextView
-            android:id="@+id/item_title_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:text="Title"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/platform_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:text="Platform" />
-
-        <TextView
-            android:id="@+id/release_date_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:text="Release date" />
-
-        <TextView
-            android:id="@+id/esrb_rating_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:text="esrb Rating" />
-
-        <TextView
-            android:id="@+id/developer_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:text="@string/developer" />
-
-        <TextView
-            android:id="@+id/publisher_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:text="@string/publisher" />
-
-        <TextView
-            android:id="@+id/genre_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:text="@string/genre" />
-
-        <TextView
-            android:id="@+id/description_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="1dp"
-            android:text="Description" />
-
-        <Button
-            android:id="@+id/insert_game_button"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-
-            android:layout_margin="10dp"
-            android:text="Add to favorites" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/impression_recyclerView"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="10dp" />
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/cover_imageview"
+                android:layout_width="294dp"
+                android:layout_height="115dp"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                app:srcCompat="@drawable/csgo_cover"
+                tools:srcCompat="@drawable/csgo_cover" />
+
+            <TextView
+                android:id="@+id/item_title_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:text="Title"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/platform_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Platform" />
+
+            <TextView
+                android:id="@+id/release_date_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Release date" />
+
+            <TextView
+                android:id="@+id/esrb_rating_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="esrb Rating" />
+
+            <TextView
+                android:id="@+id/developer_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/developer" />
+
+            <TextView
+                android:id="@+id/publisher_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/publisher" />
+
+            <TextView
+                android:id="@+id/genre_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/genre" />
+
+            <TextView
+                android:id="@+id/description_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="1dp"
+                android:text="Description" />
+
+            <Button
+                android:id="@+id/insert_game_button"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+
+                android:layout_margin="10dp"
+                android:text="Add to favorites" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/impression_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="281dp"
+                android:layout_margin="10dp" />
+
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
