@@ -23,8 +23,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug{
-            buildConfigField 'String', "ClientID", "\"8xedbwl0e7vku8o54ysapymuhk041h\""
-            buildConfigField 'String', "Auth", "\"Bearer eg3q4odwsas8h1dv52ozch590wea9t\""
+            //buildConfigField 'String', "ClientID", "\"8xedbwl0e7vku8o54ysapymuhk041h\""
+            //buildConfigField 'String', "Auth", "\"Bearer eg3q4odwsas8h1dv52ozch590wea9t\""
         }
     }
     compileOptions {

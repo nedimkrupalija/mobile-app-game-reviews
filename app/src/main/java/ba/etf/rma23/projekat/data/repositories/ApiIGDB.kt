@@ -7,8 +7,8 @@ import retrofit2.http.*
 
 const val p: String = "abc"
 public const val fieldsString : String = "id, age_ratings.category, age_ratings.rating, rating, cover.url, first_release_date, genres.name, involved_companies.company.name, involved_companies.publisher, involved_companies.developer, name, platforms.name, summary"
-const val ClientID = BuildConfig.ClientID
-const val Auth = BuildConfig.Auth
+const val ClientID = "8xedbwl0e7vku8o54ysapymuhk041h"
+const val Auth = "Bearer eg3q4odwsas8h1dv52ozch590wea9t"
 interface ApiIGDB {
 
     @Headers(
