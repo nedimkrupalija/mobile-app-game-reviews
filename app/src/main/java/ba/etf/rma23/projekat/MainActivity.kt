@@ -6,11 +6,10 @@ import android.os.Bundle
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import ba.etf.rma23.projekat.data.repositories.AccountGamesRepository
+import ba.etf.rma23.projekat.data.repositories.AppDatabase
+import ba.etf.rma23.projekat.data.repositories.GameReviewsRepository
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,12 +34,31 @@ class MainActivity : AppCompatActivity() {
 
 
 
+
+
     }
 
      fun setLocalGames(){
         scope.launch{
             AccountGamesRepository.Account.favoriteGames = AccountGamesRepository.getSavedGames() as MutableList<Game>
             print("MAIN OMILJENE: " + AccountGamesRepository.Account.favoriteGames.toString() + "\n")
+        }
+    }
+
+
+    suspend fun abc(){
+        withContext(Dispatchers.Main)
+        {
+            val db = AppDatabase.getInstance(applicationContext)
+            db.gameReviewDao().insertAll(GameReview(2,10,5555,"abc",false,"1958283"))
+        }
+    }
+
+    fun aaa(){
+        val scope = CoroutineScope(Job() + Dispatchers.Main)
+        scope.launch {
+            val db = AppDatabase.getInstance(applicationContext)
+            db.gameReviewDao().insertAll(GameReview(2,10,5555,"abc",false,"1958283"))
         }
     }
 

@@ -41,8 +41,8 @@ interface ApiAccount {
     @POST("account/{aid}/game/{gid}/gamereview")
     suspend fun createGameReview(
         @Path("aid") acHash: String,
-        @Body body: String
-    )
+        @Body body: GameReview
+    ) : Response<GameReview>
 
     @Headers("Content-Type: application/json")
     @DELETE("account/{aid}/gamereviews")
