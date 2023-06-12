@@ -13,15 +13,17 @@ object GameReviewsRepository {
     suspend fun getOfflineReviews(context: Context) : List<GameReview>{
         return withContext(Dispatchers.IO){
             var db = AppDatabase.getInstance(context)
-            var reviews = db!!.gameReviewDao().getOfflineDB()
+            var reviews = db.gameReviewDao().getOfflineDB()
             return@withContext reviews
         }
     }
     suspend fun sendOfflineReviews(context: Context) : Int{
         var gameReviews = getOfflineReviews(context)
         var count = 0
+        var db = AppDatabase.getInstance(context)
         for(gameReview in gameReviews){
             if(sendReview(context, gameReview)){
+                db.gameReviewDao().setOnline(gameReview.igdb_id)
                 count++
             }
         }
@@ -55,7 +57,6 @@ object GameReviewsRepository {
         }
     }
     suspend fun getReviewsForGame(igdb_id: Int) : List<GameReview> {
-        val gameReviewList = mutableListOf<GameReview>()
         return withContext(Dispatchers.IO){
             val response = AccountApiConfig.retrofit.getGameReviews(igdb_id)
             val responseBody = response.body()

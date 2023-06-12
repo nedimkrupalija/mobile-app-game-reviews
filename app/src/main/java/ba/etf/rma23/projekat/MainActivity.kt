@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-
+   // abc()
 
 
     }
@@ -45,21 +45,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
-    suspend fun abc(){
-        withContext(Dispatchers.Main)
-        {
-            val db = AppDatabase.getInstance(applicationContext)
-            db.gameReviewDao().insertAll(GameReview(2,10,5555,"abc",false,"1958283"))
-        }
-    }
-
-    fun aaa(){
-        val scope = CoroutineScope(Job() + Dispatchers.Main)
+    fun abc(){
         scope.launch {
-            val db = AppDatabase.getInstance(applicationContext)
-            db.gameReviewDao().insertAll(GameReview(2,10,5555,"abc",false,"1958283"))
+            print("MAIN REVIEW: " + GameReviewsRepository.getReviewsForGame(176032) + "\n")
         }
     }
+
+
+
+
 
 }

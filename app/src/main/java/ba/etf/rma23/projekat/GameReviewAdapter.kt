@@ -31,7 +31,7 @@ RecyclerView.Adapter<GameReviewAdapter.GameDetailViewHolder>(){
     override fun onBindViewHolder(holder: GameDetailViewHolder, position: Int) {
         holder.username.text = reviews[position].userName
         if (reviews[position] is UserReview){
-            val review: String = (reviews[position] as UserReview).review
+            val review: String = (reviews[position] as UserReview).review.toString()
             holder.review.text =  review
             holder.ratingBar.isVisible = false
         }

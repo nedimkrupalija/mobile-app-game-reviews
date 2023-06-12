@@ -17,15 +17,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ba.etf.rma23.projekat.GameData.Companion.getDetails
 import ba.etf.rma23.projekat.data.repositories.AccountGamesRepository
+import ba.etf.rma23.projekat.data.repositories.GameReviewsRepository
 import ba.etf.rma23.projekat.data.repositories.GamesRepository
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.Gson
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class GameDetailsFragment : Fragment() {
     private lateinit var game: Game
@@ -43,10 +41,11 @@ class GameDetailsFragment : Fragment() {
 
 
     private lateinit var reviews: RecyclerView
-
+    private var reviewsList : MutableList<UserImpression> = mutableListOf()
     private lateinit var reviewsAdapter: GameReviewAdapter
     var searchText : String = ""
     private var isPresentLocal : Boolean = false
+    private var reviewResponse : List<GameReview> = listOf()
 
 
     override fun onCreateView(
@@ -79,10 +78,12 @@ class GameDetailsFragment : Fragment() {
             val gameString = bundle.getString("game")
             game = Gson().fromJson(gameString, Game::class.java)
             searchText = bundle.getString("search_text").toString()
+            getReviewsById(game.id)
            populateDetails()
         }
         else{
             getById(241)
+            getReviewsById(241)
             populateDetails()
         }
         
@@ -91,10 +92,27 @@ class GameDetailsFragment : Fragment() {
         )
         reviewsAdapter = GameReviewAdapter(listOf())
         reviews.adapter = reviewsAdapter
-        var reviewsList: List<UserImpression>? = getDetails(game.title)?.userImpressions
-        if (reviewsList != null) {
-            reviewsAdapter.updateReview(reviewsList.sortedByDescending { it.timestamp })
+         //getDetails(game.title)?.userImpressions
+
+
+
+        print("DETAILS REVIEW "  + reviewResponse.toString() + "\n")
+        for(review in reviewResponse){
+            if(review.review != null){
+                reviewsList.add(UserReview(review.student,review.timestamp.toLong(),review.review!!))
+
+            }
+            if(review.rating != null){
+                reviewsList.add(UserRating(review.student, review.timestamp.toLong(),review.rating!!.toDouble()))
+            }
         }
+
+
+
+
+
+        reviewsAdapter.updateReview(reviewsList.sortedByDescending { it.timestamp })
+
 
 
         if(orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -132,10 +150,18 @@ class GameDetailsFragment : Fragment() {
         val scope = CoroutineScope(Job() + Dispatchers.IO)
         scope.launch {
             game = GamesRepository.getGameById(id)
+
         }
     }
 
 
+
+    private fun getReviewsById(id: Int){
+        val scope = CoroutineScope(Job() + Dispatchers.Main)
+        scope.launch {
+            print("DETAILS: " + GameReviewsRepository.getReviewsForGame(id) + "\n")
+        }
+    }
 
 
 
@@ -178,6 +204,7 @@ class GameDetailsFragment : Fragment() {
         genre.text = "Genre: " + game.genre
         description.text = game.description
 
+
         val context: Context = coverImage.context
         var id: Int = context.resources.getIdentifier(game.coverImage,"drawable",context.packageName)
         if (id == 0) id = context.resources.getIdentifier("steamicon","drawable", context.packageName)
@@ -209,4 +236,8 @@ class GameDetailsFragment : Fragment() {
         toast.show()
     }
 
+
+
 }
+
+
