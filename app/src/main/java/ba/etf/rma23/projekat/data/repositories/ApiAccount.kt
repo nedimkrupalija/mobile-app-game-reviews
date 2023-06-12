@@ -1,5 +1,6 @@
 package ba.etf.rma23.projekat.data.repositories
 
+import ba.etf.rma23.projekat.GameReview
 import ba.etf.rma23.projekat.data.repositories.responses.AccountGameResponse
 import ba.etf.rma23.projekat.data.repositories.responses.DeletedGameResponse
 import ba.etf.rma23.projekat.data.repositories.responses.GameBodyResponse
@@ -22,14 +23,31 @@ interface ApiAccount {
         @Path("gid") gameId: Int
     ) : Response<DeletedGameResponse>
 
-    /**
-     * Popraviti ne radi
-     */
+
     @Headers("Content-Type: application/json")
     @POST("account/{aid}/game")
     suspend fun saveGame(
         @Path("aid") acHash: String,
         @Body ab : GameBodyResponse
     ) : Response<AccountGameResponse>
+
+    @Headers("Content-Type: application/json")
+    @GET("game/{gid}/gamereviews")
+    suspend fun getGameReviews(
+        @Path("gid") gameId: Int
+    ) : Response<List<GameReview>>
+
+    @Headers("Content-Type: application/json")
+    @POST("account/{aid}/game/{gid}/gamereview")
+    suspend fun createGameReview(
+        @Path("aid") acHash: String,
+        @Body body: String
+    )
+
+    @Headers("Content-Type: application/json")
+    @DELETE("account/{aid}/gamereviews")
+    suspend fun deleteGameReviews(
+        @Path("aid") acHash: String
+    )
 
 }
