@@ -84,7 +84,7 @@ class GameDetailsFragment : Fragment() {
         else{
             getById(241)
             getReviewsById(241)
-            populateDetails()
+
         }
         
         reviews.layoutManager = LinearLayoutManager(
@@ -96,16 +96,6 @@ class GameDetailsFragment : Fragment() {
 
 
 
-        print("DETAILS REVIEW "  + reviewResponse.toString() + "\n")
-        for(review in reviewResponse){
-            if(review.review != null){
-                reviewsList.add(UserReview(review.student,review.timestamp.toLong(),review.review!!))
-
-            }
-            if(review.rating != null){
-                reviewsList.add(UserRating(review.student, review.timestamp.toLong(),review.rating!!.toDouble()))
-            }
-        }
 
 
 
@@ -147,10 +137,10 @@ class GameDetailsFragment : Fragment() {
 
 
     private fun getById(id : Int){
-        val scope = CoroutineScope(Job() + Dispatchers.IO)
+        val scope = CoroutineScope(Job() + Dispatchers.Main)
         scope.launch {
             game = GamesRepository.getGameById(id)
-
+            populateDetails()
         }
     }
 
@@ -159,7 +149,18 @@ class GameDetailsFragment : Fragment() {
     private fun getReviewsById(id: Int){
         val scope = CoroutineScope(Job() + Dispatchers.Main)
         scope.launch {
-            print("DETAILS: " + GameReviewsRepository.getReviewsForGame(id) + "\n")
+            val result = GameReviewsRepository.getReviewsForGame(id)
+            print("RESULT: " + result.toString() + "\n")
+            for(review in result){
+                if(review.review != null){
+                    reviewsList.add(UserReview(review.student,review.timestamp.toLong(),review.review!!))
+
+                }
+                if(review.rating != null){
+                    reviewsList.add(UserRating(review.student, review.timestamp.toLong(),review.rating!!.toDouble()))
+                }
+            }
+            reviewsAdapter.updateReview(reviewsList)
         }
     }
 

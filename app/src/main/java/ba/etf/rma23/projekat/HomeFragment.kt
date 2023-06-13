@@ -194,6 +194,13 @@ class HomeFragment : Fragment() {
         toast.show()
     }
 
+    private fun getGameReviews(game: Game){
+        val scope = CoroutineScope(Job() + Dispatchers.Main)
+        scope.launch{
+
+        }
+    }
+
     private fun showDetails(game: Game?){
         val gameString = Gson().toJson(game)
         val bundle = bundleOf("game" to gameString, "search_text" to searchText.text.toString())
