@@ -3,6 +3,7 @@ package ba.etf.rma23.projekat.data.repositories
 import android.content.Context
 import ba.etf.rma23.projekat.Game
 import ba.etf.rma23.projekat.GameReview
+import ba.etf.rma23.projekat.data.repositories.responses.SendGameReviewResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -32,13 +33,10 @@ object GameReviewsRepository {
 
     suspend fun sendReview(context: Context, gameReview: GameReview) : Boolean{
         var favoritesGames = AccountGamesRepository.getSavedGames()
-        sendReviewHelp(gameReview)
-
-        if(favoritesGames.find { it.id == gameReview.igdb_id } != null){
-            return true
+        try {
+            sendReviewHelp(gameReview)
         }
-        else{
-            AccountGamesRepository.saveGame(GamesRepository.getGameById(gameReview.igdb_id))
+        catch (e: Exception){
             return withContext(Dispatchers.IO){
                 var db = AppDatabase.getInstance(context)
                 gameReview.online = true
@@ -46,12 +44,15 @@ object GameReviewsRepository {
                 return@withContext false
             }
         }
+        if(favoritesGames.find { it.id == gameReview.igdb_id } == null){
+            AccountGamesRepository.saveGame(GamesRepository.getGameById(gameReview.igdb_id))
+        }
 
-
+        return true
     }
     suspend fun sendReviewHelp(gameReview: GameReview) : GameReview {
         return withContext(Dispatchers.IO){
-            val response = AccountApiConfig.retrofit.createGameReview(AccountGamesRepository.Account.acHash,gameReview)
+            val response = AccountApiConfig.retrofit.createGameReview(AccountGamesRepository.Account.acHash,SendGameReviewResponse(gameReview.rating, gameReview.review), gameReview.igdb_id)
             val responsebody = response.body()
             return@withContext responsebody!!
         }

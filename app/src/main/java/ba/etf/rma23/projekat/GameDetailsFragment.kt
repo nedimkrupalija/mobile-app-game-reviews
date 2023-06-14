@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.RatingBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.os.bundleOf
@@ -15,13 +17,13 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import ba.etf.rma23.projekat.GameData.Companion.getDetails
 import ba.etf.rma23.projekat.data.repositories.AccountGamesRepository
 import ba.etf.rma23.projekat.data.repositories.GameReviewsRepository
 import ba.etf.rma23.projekat.data.repositories.GamesRepository
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
 import kotlinx.coroutines.*
 
@@ -39,6 +41,12 @@ class GameDetailsFragment : Fragment() {
 
     private lateinit var addButton: Button
 
+    /** review
+     */
+    private lateinit var reviewLayout: LinearLayout
+    private lateinit var submitReview: Button
+    private lateinit var reviewEditText: TextInputEditText
+    private lateinit var reviewRating: RatingBar
 
     private lateinit var reviews: RecyclerView
     private var reviewsList : MutableList<UserImpression> = mutableListOf()
@@ -66,6 +74,10 @@ class GameDetailsFragment : Fragment() {
 
         addButton = view.findViewById(R.id.insert_game_button)
 
+        reviewLayout = view.findViewById(R.id.review_layout)
+        submitReview = view.findViewById(R.id.review_submit_button)
+        reviewRating = view.findViewById(R.id.review_rating)
+        reviewEditText = view.findViewById(R.id.review_textedit)
 
 
         reviews = view.findViewById(R.id.impression_recyclerView)
@@ -101,7 +113,7 @@ class GameDetailsFragment : Fragment() {
 
 
 
-        reviewsAdapter.updateReview(reviewsList.sortedByDescending { it.timestamp })
+       // reviewsAdapter.updateReview(reviewsList.sortedByDescending { it.timestamp })
 
 
 
@@ -119,21 +131,40 @@ class GameDetailsFragment : Fragment() {
         isPresentLocal = AccountGamesRepository.Account.isInLocalGames(game.id)
         if(isPresentLocal){
             addButton.text = "Remove from favorites"
+            reviewLayout.visibility = View.VISIBLE
         }
         else{
             addButton.text = "Add to favorites"
+            reviewLayout.visibility = View.INVISIBLE
         }
 
         addButton.setOnClickListener {
             addGameToFavorites(game)
         }
 
-
+        submitReview.setOnClickListener {
+            submitGameReview()
+        }
 
 
         return view
     }
 
+    private fun submitGameReview() {
+        val scope = CoroutineScope(Job() + Dispatchers.Main)
+        val review = GameReview(0, reviewRating.numStars,game.id,reviewEditText.text.toString(),AccountGamesRepository.Account.student,true,System.currentTimeMillis().toString())
+        scope.launch {
+            if(GameReviewsRepository.sendReview(requireActivity().applicationContext, review)){
+                val toast = Toast.makeText(context,"Game review succesfully sent!",Toast.LENGTH_SHORT)
+                toast.show()
+            }
+            else{
+                val toast = Toast.makeText(context, "There was an error while sending review!", Toast.LENGTH_SHORT)
+                toast.show()
+            }
+
+        }
+    }
 
 
     private fun getById(id : Int){
@@ -149,19 +180,37 @@ class GameDetailsFragment : Fragment() {
     private fun getReviewsById(id: Int){
         val scope = CoroutineScope(Job() + Dispatchers.Main)
         scope.launch {
-            val result = GameReviewsRepository.getReviewsForGame(id)
-            print("RESULT: " + result.toString() + "\n")
-            for(review in result){
-                if(review.review != null){
-                    reviewsList.add(UserReview(review.student,review.timestamp.toLong(),review.review!!))
+            try {
+                val result = GameReviewsRepository.getReviewsForGame(id)
+                print("RESULT: " + result.toString() + "\n")
+                for (review in result) {
+                    if (review.review != null) {
+                        reviewsList.add(
+                            UserReview(
+                                review.student,
+                                review.timestamp.toLong(),
+                                review.review!!
+                            )
+                        )
 
+                    }
+                    if (review.rating != null) {
+                        reviewsList.add(
+                            UserRating(
+                                review.student,
+                                review.timestamp.toLong(),
+                                review.rating!!.toDouble()
+                            )
+                        )
+                    }
                 }
-                if(review.rating != null){
-                    reviewsList.add(UserRating(review.student, review.timestamp.toLong(),review.rating!!.toDouble()))
-                }
+                reviewsAdapter.updateReview(reviewsList)
             }
-            reviewsAdapter.updateReview(reviewsList)
+            catch(e: Exception){
+                reviewsAdapter.updateReview(listOf())
+            }
         }
+
     }
 
 
@@ -181,6 +230,7 @@ class GameDetailsFragment : Fragment() {
             val toast = Toast.makeText(context, "Game succesfully deleted from favorites!", Toast.LENGTH_SHORT)
             toast.show()
             addButton.text = "Add to favorites"
+            reviewLayout.visibility = View.INVISIBLE
         }
         else{
             val toast = Toast.makeText(
@@ -190,6 +240,7 @@ class GameDetailsFragment : Fragment() {
             )
             toast.show()
             addButton.text = "Remove from favorites"
+            reviewLayout.visibility = View.VISIBLE
         }
 
     }

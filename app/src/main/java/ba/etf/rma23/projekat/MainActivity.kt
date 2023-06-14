@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-   // abc()
+
 
 
     }
@@ -47,7 +47,10 @@ class MainActivity : AppCompatActivity() {
 
     fun abc(){
         scope.launch {
-            print("MAIN REVIEW: " + GameReviewsRepository.getReviewsForGame(176032) + "\n")
+            print("ABCMAIN " + GameReviewsRepository.sendReview(applicationContext,
+                GameReview(0,5,1532, "abc","abc", false,
+                    "0"
+                )).toString() + "\n")
         }
     }
 

@@ -4,6 +4,7 @@ import ba.etf.rma23.projekat.GameReview
 import ba.etf.rma23.projekat.data.repositories.responses.AccountGameResponse
 import ba.etf.rma23.projekat.data.repositories.responses.DeletedGameResponse
 import ba.etf.rma23.projekat.data.repositories.responses.GameBodyResponse
+import ba.etf.rma23.projekat.data.repositories.responses.SendGameReviewResponse
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -41,7 +42,8 @@ interface ApiAccount {
     @POST("account/{aid}/game/{gid}/gamereview")
     suspend fun createGameReview(
         @Path("aid") acHash: String,
-        @Body body: GameReview
+        @Body body: SendGameReviewResponse,
+        @Path("gid") gameId: Int
     ) : Response<GameReview>
 
     @Headers("Content-Type: application/json")
