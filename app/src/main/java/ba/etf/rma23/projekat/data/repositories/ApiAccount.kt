@@ -42,7 +42,7 @@ interface ApiAccount {
     @POST("account/{aid}/game/{gid}/gamereview")
     suspend fun createGameReview(
         @Path("aid") acHash: String,
-        @Body body: SendGameReviewResponse,
+        @Body body: GameReview,
         @Path("gid") gameId: Int
     ) : Response<GameReview>
 

@@ -152,7 +152,7 @@ class GameDetailsFragment : Fragment() {
 
     private fun submitGameReview() {
         val scope = CoroutineScope(Job() + Dispatchers.Main)
-        val review = GameReview(0, reviewRating.numStars,game.id,reviewEditText.text.toString(),AccountGamesRepository.Account.student,true,System.currentTimeMillis().toString())
+        val review = GameReview(0, reviewRating.rating.toInt(),game.id,reviewEditText.text.toString(),AccountGamesRepository.Account.student,true,System.currentTimeMillis().toString())
         scope.launch {
             if(GameReviewsRepository.sendReview(requireActivity().applicationContext, review)){
                 val toast = Toast.makeText(context,"Game review succesfully sent!",Toast.LENGTH_SHORT)

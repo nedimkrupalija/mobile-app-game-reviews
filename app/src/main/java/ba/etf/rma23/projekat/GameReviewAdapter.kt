@@ -37,7 +37,7 @@ RecyclerView.Adapter<GameReviewAdapter.GameDetailViewHolder>(){
         }
         else if(reviews[position] is UserRating){
             val rating: Double = (reviews[position] as UserRating).rating
-            holder.ratingBar.rating = rating.toFloat()/2.0f
+            holder.ratingBar.rating = rating.toFloat()
             holder.review.isVisible = false
         }
     }

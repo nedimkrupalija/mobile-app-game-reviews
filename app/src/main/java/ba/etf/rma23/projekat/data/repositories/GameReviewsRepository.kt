@@ -19,14 +19,18 @@ object GameReviewsRepository {
         }
     }
     suspend fun sendOfflineReviews(context: Context) : Int{
-        var gameReviews = getOfflineReviews(context)
+        val gameReviews = getOfflineReviews(context)
         var count = 0
-        var db = AppDatabase.getInstance(context)
+        val db = AppDatabase.getInstance(context)
         for(gameReview in gameReviews){
-            if(sendReview(context, gameReview)){
+            try{
+                sendReviewHelp(gameReview)
                 db.gameReviewDao().setOnline(gameReview.igdb_id)
-                count++
             }
+            catch (e: Exception){
+                continue
+            }
+            count++
         }
         return count
     }
@@ -39,7 +43,7 @@ object GameReviewsRepository {
         catch (e: Exception){
             return withContext(Dispatchers.IO){
                 var db = AppDatabase.getInstance(context)
-                gameReview.online = true
+                gameReview.online = false
                 db.gameReviewDao().insertAll(gameReview)
                 return@withContext false
             }
@@ -52,7 +56,7 @@ object GameReviewsRepository {
     }
     suspend fun sendReviewHelp(gameReview: GameReview) : GameReview {
         return withContext(Dispatchers.IO){
-            val response = AccountApiConfig.retrofit.createGameReview(AccountGamesRepository.Account.acHash,SendGameReviewResponse(gameReview.rating, gameReview.review), gameReview.igdb_id)
+            val response = AccountApiConfig.retrofit.createGameReview(AccountGamesRepository.Account.acHash,gameReview , gameReview.igdb_id)
             val responsebody = response.body()
             return@withContext responsebody!!
         }

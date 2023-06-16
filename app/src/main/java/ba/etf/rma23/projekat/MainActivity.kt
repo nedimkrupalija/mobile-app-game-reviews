@@ -33,28 +33,14 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-
-
-
     }
 
      fun setLocalGames(){
         scope.launch{
             AccountGamesRepository.Account.favoriteGames = AccountGamesRepository.getSavedGames() as MutableList<Game>
-            print("MAIN OMILJENE: " + AccountGamesRepository.Account.favoriteGames.toString() + "\n")
+
         }
     }
-
-    fun abc(){
-        scope.launch {
-            print("ABCMAIN " + GameReviewsRepository.sendReview(applicationContext,
-                GameReview(0,5,1532, "abc","abc", false,
-                    "0"
-                )).toString() + "\n")
-        }
-    }
-
-
 
 
 
