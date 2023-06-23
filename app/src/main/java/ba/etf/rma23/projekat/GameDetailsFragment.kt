@@ -156,6 +156,7 @@ class GameDetailsFragment : Fragment() {
         scope.launch {
             if(GameReviewsRepository.sendReview(requireActivity().applicationContext, review)){
                 val toast = Toast.makeText(context,"Game review succesfully sent!",Toast.LENGTH_SHORT)
+                GameReviewsRepository.sendOfflineReviews(requireActivity().applicationContext)
                 toast.show()
             }
             else{

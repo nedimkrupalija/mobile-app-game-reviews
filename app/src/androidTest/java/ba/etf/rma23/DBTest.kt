@@ -84,10 +84,11 @@ class DBTest {
                 null,
                 SQLiteDatabase.OPEN_READONLY
             )
-            db.rawQuery("DELETE FROM gamereview;", null)
+            db.rawQuery("DELETE FROM gamereview", null)
             obrisi()
         }
     }
+
 
     @Test
     fun a0_countOfflineReviews() = runBlocking {
@@ -109,42 +110,41 @@ class DBTest {
         executeCountAndCheck(countNotOnline, "broj_reviews", 0)
     }
 
-
-       @Test
-        fun a3_sendWhileOffline() = runBlocking {
-            InstrumentationRegistry.getInstrumentation().uiAutomation.executeShellCommand("svc wifi disable")
-            InstrumentationRegistry.getInstrumentation().uiAutomation.executeShellCommand("svc data disable")
-            Thread.sleep(2000)
-            var rez =
-                GameReviewsRepository.sendReview(context, GameReview(3, "dobro", idIGRE, false, "", ""))
-            assert(!rez) { "Should return false" }
-            executeCountAndCheck(countNotOnline, "broj_reviews", 1)
-        }
+    @Test
+    fun a3_sendWhileOffline() = runBlocking {
+        InstrumentationRegistry.getInstrumentation().uiAutomation.executeShellCommand("svc wifi disable")
+        InstrumentationRegistry.getInstrumentation().uiAutomation.executeShellCommand("svc data disable")
+        Thread.sleep(2000)
+        var rez =
+            GameReviewsRepository.sendReview(context, GameReview(3, "dobro", idIGRE, false, "", ""))
+        assert(!rez) { "Should return false" }
+        executeCountAndCheck(countNotOnline, "broj_reviews", 1)
+    }
 
     @Test
-     fun a4_enableInternetAndSendOffline() = runBlocking {
-         var uia = InstrumentationRegistry.getInstrumentation().uiAutomation
-         uia.executeShellCommand("svc wifi enable")
-         uia.executeShellCommand("svc data enable")
-         Thread.sleep(2000)
-         var rez = GameReviewsRepository.sendOfflineReviews(context)
-         assertEquals(rez, 1)
-         executeCountAndCheck(countNotOnline, "broj_reviews", 0)
+    fun a4_enableInternetAndSendOffline() = runBlocking {
+        var uia = InstrumentationRegistry.getInstrumentation().uiAutomation
+        uia.executeShellCommand("svc wifi enable")
+        uia.executeShellCommand("svc data enable")
+        Thread.sleep(2000)
+        var rez = GameReviewsRepository.sendOfflineReviews(context)
+        assertEquals(rez, 1)
+        executeCountAndCheck(countNotOnline, "broj_reviews", 0)
 
-     }
+    }
 
-   @Test
-     fun a5_getOnlineReviewsForGame() = runBlocking {
-         var rez = GameReviewsRepository.getReviewsForGame(idIGRE)
-         assertEquals(rez.size, 1)
-     }
+    @Test
+    fun a5_getOnlineReviewsForGame() = runBlocking {
+        var rez = GameReviewsRepository.getReviewsForGame(idIGRE)
+        assertEquals(rez.size, 1)
+    }
 
-     @Test
-     fun a6_deleteAllAndCheckNumReviewsOnline() = runBlocking {
-         obrisi()
-         var rez = GameReviewsRepository.getReviewsForGame(idIGRE)
-         assertEquals(rez.size, 0)
-     }
+    @Test
+    fun a6_deleteAllAndCheckNumReviewsOnline() = runBlocking {
+        obrisi()
+        var rez = GameReviewsRepository.getReviewsForGame(idIGRE)
+        assertEquals(rez.size, 0)
+    }
 
 
 }

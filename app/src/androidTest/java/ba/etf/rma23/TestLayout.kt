@@ -1,4 +1,4 @@
-package ba.etf.rma23.projekat
+package ba.etf.rma23
 
 /*
 @RunWith(AndroidJUnit4::class)

@@ -1,4 +1,4 @@
-package ba.etf.rma23.projekat
+package ba.etf.rma23
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -13,6 +13,7 @@ import org.junit.Assert.*
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
+
 @RunWith(AndroidJUnit4::class)
 class ExampleInstrumentedTest {
     @Test
