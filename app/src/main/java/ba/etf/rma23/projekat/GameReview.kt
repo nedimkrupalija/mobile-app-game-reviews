@@ -7,11 +7,12 @@ import com.google.gson.annotations.SerializedName
 
 @Entity
 data class GameReview(
-    @PrimaryKey(true) var id: Int,
+
     @ColumnInfo(name = "rating") @SerializedName("rating") var rating: Int?,
-    @ColumnInfo(name = "igdb_id") @SerializedName("GameId") var igdb_id: Int,
     @ColumnInfo(name = "review") @SerializedName("review") var review: String?,
-    @SerializedName("student") var student: String,
+    @ColumnInfo(name = "igdb_id") @SerializedName("GameId") var igdb_id: Int,
     @ColumnInfo(name = "online") var online: Boolean,
-    @SerializedName("timestamp") var timestamp: String
+    @SerializedName("student") var student: String,
+    @SerializedName("timestamp") var timestamp: String,
+    @PrimaryKey(true) var id: Int = 0
     )

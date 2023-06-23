@@ -4,7 +4,6 @@ import ba.etf.rma23.projekat.GameReview
 import ba.etf.rma23.projekat.data.repositories.responses.AccountGameResponse
 import ba.etf.rma23.projekat.data.repositories.responses.DeletedGameResponse
 import ba.etf.rma23.projekat.data.repositories.responses.GameBodyResponse
-import ba.etf.rma23.projekat.data.repositories.responses.SendGameReviewResponse
 import retrofit2.Response
 import retrofit2.http.*
 

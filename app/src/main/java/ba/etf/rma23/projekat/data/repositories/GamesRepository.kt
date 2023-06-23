@@ -16,6 +16,8 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import java.lang.reflect.Type
 
 import java.math.RoundingMode
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 import java.text.SimpleDateFormat
 
 sealed class Result<out R> {

@@ -1,4 +1,4 @@
-package ba.etf.rma23
+package ba.etf.rma23.projekat
 
 import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
@@ -16,8 +16,6 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ba.etf.rma23.projekat.GameData.Companion.getAll
-import ba.etf.rma23.projekat.MainActivity
-import ba.etf.rma23.projekat.R
 import org.hamcrest.CoreMatchers
 import org.hamcrest.CoreMatchers.*
 import org.hamcrest.Description

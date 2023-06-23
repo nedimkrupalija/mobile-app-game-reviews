@@ -3,11 +3,9 @@ package ba.etf.rma23.projekat.data.repositories
 import android.content.Context
 import ba.etf.rma23.projekat.Game
 import ba.etf.rma23.projekat.GameReview
-import ba.etf.rma23.projekat.data.repositories.responses.SendGameReviewResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-
-
+import java.net.ConnectException
 
 
 object GameReviewsRepository {
@@ -36,21 +34,24 @@ object GameReviewsRepository {
     }
 
     suspend fun sendReview(context: Context, gameReview: GameReview) : Boolean{
-        var favoritesGames = AccountGamesRepository.getSavedGames()
+        var favoritesGames: List<Game> = mutableListOf()
         try {
+            print("POKRENUT SEND REVIEW! \n" )
             sendReviewHelp(gameReview)
+            favoritesGames = AccountGamesRepository.getSavedGames()
+            if (favoritesGames.find { it.id == gameReview.igdb_id } == null) {
+                    AccountGamesRepository.saveGame(GamesRepository.getGameById(gameReview.igdb_id))
+                }
         }
         catch (e: Exception){
             return withContext(Dispatchers.IO){
                 var db = AppDatabase.getInstance(context)
                 gameReview.online = false
-                db.gameReviewDao().insertAll(gameReview)
+                db.gameReviewDao().insert(gameReview)
                 return@withContext false
             }
         }
-        if(favoritesGames.find { it.id == gameReview.igdb_id } == null){
-            AccountGamesRepository.saveGame(GamesRepository.getGameById(gameReview.igdb_id))
-        }
+
 
         return true
     }
@@ -60,6 +61,7 @@ object GameReviewsRepository {
             val responsebody = response.body()
             return@withContext responsebody!!
         }
+
     }
     suspend fun getReviewsForGame(igdb_id: Int) : List<GameReview> {
         return withContext(Dispatchers.IO){

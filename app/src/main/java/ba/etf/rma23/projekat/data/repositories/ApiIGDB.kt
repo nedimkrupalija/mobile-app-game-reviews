@@ -1,6 +1,5 @@
 package ba.etf.rma23.projekat.data.repositories
 
-import ba.etf.rma23.projekat.BuildConfig
 import ba.etf.rma23.projekat.data.repositories.responses.GameSerialized
 import retrofit2.Response
 import retrofit2.http.*

@@ -1,6 +1,5 @@
 package ba.etf.rma23.projekat.data.repositories
 
-import androidx.compose.ui.text.toLowerCase
 import ba.etf.rma23.projekat.Game
 import ba.etf.rma23.projekat.data.repositories.AccountGamesRepository.Account.favoriteGames
 import ba.etf.rma23.projekat.data.repositories.responses.AccountGameResponse
@@ -8,6 +7,7 @@ import ba.etf.rma23.projekat.data.repositories.responses.DeletedGameResponse
 import ba.etf.rma23.projekat.data.repositories.responses.GameBodyResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.net.UnknownHostException
 
 object AccountGamesRepository {
 

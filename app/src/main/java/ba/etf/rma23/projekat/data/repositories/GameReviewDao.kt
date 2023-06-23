@@ -3,7 +3,6 @@ package ba.etf.rma23.projekat.data.repositories
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import androidx.room.Update
 import ba.etf.rma23.projekat.GameReview
 
 @Dao
@@ -13,6 +12,8 @@ interface GameReviewDao {
     @Insert
     suspend fun insertAll(vararg gameReviews: GameReview)
 
+    @Insert
+    suspend fun insert(gameReview: GameReview)
     @Query("SELECT * FROM gamereview WHERE online=0")
     suspend fun getOfflineDB() : List<GameReview>
 

@@ -1,13 +1,11 @@
 package ba.etf.rma23.projekat
 
-import android.annotation.SuppressLint
+import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebSettings
-import android.webkit.WebView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -18,13 +16,9 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import ba.etf.rma23.projekat.GameData.Companion.getAll
-import ba.etf.rma23.projekat.GameData.Companion.getDetails
-import ba.etf.rma23.projekat.R
 import ba.etf.rma23.projekat.data.repositories.AccountGamesRepository
 import ba.etf.rma23.projekat.data.repositories.AccountGamesRepository.setAge
 import ba.etf.rma23.projekat.data.repositories.GamesRepository
-import ba.etf.rma23.projekat.data.repositories.GamesRepository.getGamesSafe
 import ba.etf.rma23.projekat.data.repositories.GamesRepository.sortGames
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -46,6 +40,7 @@ class HomeFragment : Fragment() {
     private lateinit var setAgeButton: Button
     private lateinit var ageText: EditText
     private lateinit var gameType: Button
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -164,7 +159,7 @@ class HomeFragment : Fragment() {
                     }
 
                     gamesList = AccountGamesRepository.removeNonSafeLocal()
-                    print("LISTA NAKON IZB: " + gamesList.toString() + "\n")
+
                     gameListAdapter.updateGames(gamesList)
                 }
                 else {
@@ -227,21 +222,27 @@ class HomeFragment : Fragment() {
     private fun getGamesByName(query: String){
         val scope = CoroutineScope(Job() + Dispatchers.Main)
         scope.launch {
-            val result = GamesRepository.getGamesByName(query)
-            when(result){
-                is List<Game> -> onSucces(result)
-                else -> onError()
+            try{
+                val result = GamesRepository.getGamesByName(query)
+                when(result){
+                    is List<Game> -> onSucces(result)
+                    else -> onError()
+                }
             }
+            catch (ex: Exception){
+                print("DESILA SE GRESKA")
+            }
+
         }
     }
     fun onSucces(games:List<Game>){
-        val toast = Toast.makeText(context, "Found games", Toast.LENGTH_SHORT)
-        toast.show()
+        //val toast = Toast.makeText(context, "Found games", Toast.LENGTH_SHORT)
+        //toast.show()
         gameListAdapter.updateGames(games)
     }
     fun onError(){
-        val toast = Toast.makeText(context, "Search error", Toast.LENGTH_SHORT)
-        toast.show()
+        //val toast = Toast.makeText(context, "Search error", Toast.LENGTH_SHORT)
+       // toast.show()
     }
 
 

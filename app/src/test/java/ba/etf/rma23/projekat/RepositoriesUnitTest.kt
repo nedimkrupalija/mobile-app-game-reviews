@@ -1,4 +1,4 @@
-package ba.etf.rma23
+package ba.etf.rma23.projekat
 
 import  ba.etf.rma23.projekat.*
 import ba.etf.rma23.projekat.data.repositories.AccountGamesRepository
