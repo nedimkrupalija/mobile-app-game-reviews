@@ -40,7 +40,7 @@ class DBTest {
     //pri testiranju zamjenite hash sa vašim i id igre umjesto 22 postavite na neki drugi broj
     // da ne bi došlo do konfuzije oko rezultata testova ako dva studenta istovremeno testiraju svoj kod
     private val HASH = "da694fdf-cd2e-4da6-b80d-e1a81e41bd25"
-    private val idIGRE = 50975
+    private val idIGRE = 89616
 
 
     private val countNotOnline =
