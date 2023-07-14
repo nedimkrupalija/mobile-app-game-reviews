@@ -11,9 +11,13 @@ Android application written in Kotlin with features including:
 
 # Project pictures
 
+<img src="https://github.com/nedimkrupalija/mobile-app-game-reviews/assets/115478342/629f63c4-979a-4cf3-abf9-a3255715becb" width="400" height="880">
 
-![Screenshot_20230714_123739](https://github.com/nedimkrupalija/mobile-app-game-reviews/assets/115478342/b6c44485-4090-48ef-8b8b-92539cb729ca)
-![Screenshot_20230714_123822](https://github.com/nedimkrupalija/mobile-app-game-reviews/assets/115478342/ef25855d-3173-41cb-892d-b08dc8e27281)
-![Screenshot_20230714_123829](https://github.com/nedimkrupalija/mobile-app-game-reviews/assets/115478342/8659dc7e-a3a8-4488-b693-17c41389551a)
-![Screenshot_20230714_123853](https://github.com/nedimkrupalija/mobile-app-game-reviews/assets/115478342/63a1e9ac-6e02-4e33-aeee-c0204a2dc38d)
-![Screenshot_20230714_123927](https://github.com/nedimkrupalija/mobile-app-game-reviews/assets/115478342/f909c30b-291a-413c-ad5d-9419810d82d8)
+<img src="https://github.com/nedimkrupalija/mobile-app-game-reviews/assets/115478342/90ecdcaa-b93f-4127-bcd0-654cee0915e3" width="400" height="880">
+
+<img src="https://github.com/nedimkrupalija/mobile-app-game-reviews/assets/115478342/f7d19c3f-5138-4bf9-8fce-48cab75d728f" width="400" height="880">
+
+<img src="https://github.com/nedimkrupalija/mobile-app-game-reviews/assets/115478342/5fdf38cc-062f-49c0-9e52-4635ec9858fd" width="400" height="880">
+
+<img src="https://github.com/nedimkrupalija/mobile-app-game-reviews/assets/115478342/d2223da8-74a4-4df4-ac33-8a17d80edce8" width="400" height="880">
+
